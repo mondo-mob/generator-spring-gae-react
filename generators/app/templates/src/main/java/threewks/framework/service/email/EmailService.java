@@ -22,14 +22,14 @@ public class EmailService {
     private JavaMailSender mailSender;
     private String fromAddress;
 
-    public EmailService(TemplateEngine templateEngine, JavaMailSender mailSender, @Value("${mailSender.fromAddress:myapp@email.org}") String fromAddress) {
+    public EmailService(TemplateEngine templateEngine, JavaMailSender mailSender, @Value("${mailSender.fromAddress}") String fromAddress) {
         this.templateEngine = templateEngine;
         this.mailSender = mailSender;
         this.fromAddress = fromAddress;
     }
 
-    public void send(String type, String to, Map<String, String> params) {
-        EmailBuilder emailBuilder = EmailBuilder.email(to, params.get("subject"), type, params);
+    public void send(String type, String to, Map<String, Object> params) {
+        EmailBuilder emailBuilder = EmailBuilder.email(to, (String) params.get("subject"), type, params);
         send(emailBuilder.createEmail());
     }
 

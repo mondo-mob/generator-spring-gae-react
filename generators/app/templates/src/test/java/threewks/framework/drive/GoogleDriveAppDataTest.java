@@ -2,11 +2,11 @@ package threewks.framework.drive;
 
 import com.google.api.client.testing.http.MockLowLevelHttpResponse;
 import com.google.api.services.drive.model.File;
-import threewks.framework.MockUrlFetchTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
+import threewks.framework.MockUrlFetchTransport;
 
 import java.util.Optional;
 

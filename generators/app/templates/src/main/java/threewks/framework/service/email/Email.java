@@ -7,10 +7,10 @@ public class Email {
     private String to;
     private String subject;
     private String template;
-    private Map<String, String> templateParams;
+    private Map<String, Object> templateParams;
     private List<MailAttachment> attachments;
 
-    Email(String to, String subject, String template, Map<String, String> templateParams, List<MailAttachment> attachments) {
+    Email(String to, String subject, String template, Map<String, Object> templateParams, List<MailAttachment> attachments) {
         this.to = to;
         this.subject = subject;
         this.template = template;
@@ -30,7 +30,7 @@ public class Email {
         return template;
     }
 
-    public Map<String, String> getTemplateParams() {
+    public Map<String, Object> getTemplateParams() {
         return templateParams;
     }
 

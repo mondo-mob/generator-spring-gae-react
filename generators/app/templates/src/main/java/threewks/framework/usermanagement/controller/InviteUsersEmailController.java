@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import threewks.framework.service.email.EmailService;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -31,7 +32,7 @@ public class InviteUsersEmailController {
     @RequestMapping(method = POST, path = "/send-user-invite")
     public void sendInvitation(@RequestParam("email") String email, @RequestParam("code") String code) {
         LOG.info("Sending invitation email to user: " + email);
-        HashMap<String, String> props = new HashMap<>();
+        Map<String, Object> props = new HashMap<>();
         props.put("invite_link", String.format("%s/register/%s", this.host, code));
         props.put("subject", "You have been invited to the spring buskers app");
         emailService.send("invite-user", email, props);

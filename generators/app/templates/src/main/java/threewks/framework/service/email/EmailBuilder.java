@@ -10,13 +10,13 @@ public class EmailBuilder {
     private String to;
     private String subject;
     private String template;
-    private Map<String, String> templateParams;
+    private Map<String, Object> templateParams;
     private List<MailAttachment> attachments = new ArrayList<>();
 
     private EmailBuilder() {
     }
 
-    public static EmailBuilder email(String to, String subject, String template, Map<String, String> templateParams) {
+    public static EmailBuilder email(String to, String subject, String template, Map<String, Object> templateParams) {
         EmailBuilder emailBuilder = new EmailBuilder();
         emailBuilder.to = to;
         emailBuilder.subject = subject;

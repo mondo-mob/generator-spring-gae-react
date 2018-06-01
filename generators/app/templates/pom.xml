@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.13.RELEASE</version>
+        <version>2.0.2.RELEASE</version>
     </parent>
 
     <scm>
@@ -172,13 +172,6 @@
 
         <!-- Include Servlet API -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.googlecode.objectify</groupId>
             <artifactId>objectify</artifactId>
             <version>5.1.21</version>
@@ -187,7 +180,7 @@
         <dependency>
             <groupId>com.threewks.spring</groupId>
             <artifactId>spring-boot-gae</artifactId>
-            <version>1.0.0-beta-19</version>
+            <version>2.0.0-beta-1</version>
         </dependency>
 
         <dependency>
