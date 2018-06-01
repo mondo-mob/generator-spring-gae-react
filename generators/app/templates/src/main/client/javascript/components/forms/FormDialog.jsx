@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { submit } from 'redux-form';
-import { Dialog, Button, DialogActions, DialogContent, DialogTitle } from 'material-ui';
 
 class FormDialog extends Component {
   static propTypes = {

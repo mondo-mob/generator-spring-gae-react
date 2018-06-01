@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { withStyles } from 'material-ui';
+import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import * as model from '../../model';

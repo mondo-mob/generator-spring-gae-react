@@ -1,8 +1,8 @@
-import React from 'react';
+import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
-import Button from 'material-ui/Button';
 import { email, required } from 'redux-form-validators';
 
 const LoginForm = ({ handleSubmit, submitting }) => (

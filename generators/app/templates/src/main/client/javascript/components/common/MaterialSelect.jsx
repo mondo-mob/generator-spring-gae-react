@@ -1,7 +1,7 @@
-import React from 'react';
-import * as PropTypes from 'prop-types';
-import { FormControl, FormHelperText, Input, InputLabel, withStyles } from 'material-ui';
+import { FormControl, FormHelperText, Input, InputLabel, withStyles } from '@material-ui/core';
 import * as _ from 'lodash';
+import * as PropTypes from 'prop-types';
+import React from 'react';
 import SelectWrapped from './ReactSelect';
 
 const ITEM_HEIGHT = 48;

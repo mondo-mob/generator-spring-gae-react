@@ -1,8 +1,8 @@
+import { Button } from '@material-ui/core';
+import { bool, func } from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
-import { bool, func } from 'prop-types';
-import { Button } from 'material-ui';
 import { email, required } from 'redux-form-validators';
 import ChipSelectField from '../common/ChipSelectField';
 

@@ -1,11 +1,11 @@
+import { func, object } from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { SubmissionError } from 'redux-form';
-import { func, object } from 'prop-types';
-import CenteredPanelLayout from './CenteredPanelLayout';
-import LoginForm from '../components/forms/LoginForm';
 import * as authActions from '../actions/auth';
+import LoginForm from '../components/forms/LoginForm';
+import CenteredPanelLayout from './CenteredPanelLayout';
 import './LoginPage.less';
 
 class LoginPage extends Component {

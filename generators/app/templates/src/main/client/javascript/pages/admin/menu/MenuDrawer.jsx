@@ -1,17 +1,17 @@
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import ExitIcon from '@material-ui/icons/ExitToApp';
+import PeopleIcon from '@material-ui/icons/People';
+import PersonIcon from '@material-ui/icons/Person';
+import { bool, func, object } from 'prop-types';
 /* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { func, object, bool } from 'prop-types';
-import { Divider, Drawer, ListSubheader, List, ListItem, ListItemIcon, ListItemText } from 'material-ui';
-import ExitIcon from '@material-ui/icons/ExitToApp';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import PersonIcon from '@material-ui/icons/Person';
-import PeopleIcon from '@material-ui/icons/People';
-import ProfileCard from './ProfileCard';
 import * as authActions from '../../../actions/auth';
-import { getLoggedInUser, getOpenDrawer } from '../../../reducers';
 import { closeDrawer as closeDrawerAction } from '../../../actions/drawer';
+import { getLoggedInUser, getOpenDrawer } from '../../../reducers';
+import ProfileCard from './ProfileCard';
 
 const MenuDrawer = ({
   loggedInUser,

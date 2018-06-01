@@ -1,5 +1,5 @@
+import { createMuiTheme } from '@material-ui/core/styles';
 import Color from 'color';
-import { createMuiTheme } from 'material-ui/styles';
 
 const spacing = 8;
 

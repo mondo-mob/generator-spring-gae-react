@@ -1,13 +1,13 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */
-import React from 'react';
-import * as PropTypes from 'prop-types';
-import { Chip, MenuItem, Typography } from 'material-ui';
-import Select from 'react-select';
+import { Chip, MenuItem, Typography } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import CancelIcon from '@material-ui/icons/Cancel';
 import ClearIcon from '@material-ui/icons/Clear';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import * as PropTypes from 'prop-types';
+/* eslint-disable jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */
+import React from 'react';
 import ReactDOM from 'react-dom';
+import Select from 'react-select';
 
 class Option extends React.Component {
   static propTypes = {

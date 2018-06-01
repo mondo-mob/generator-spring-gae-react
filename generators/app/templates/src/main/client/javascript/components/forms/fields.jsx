@@ -1,7 +1,7 @@
-import React from 'react';
+import ChipInput from '@material-ui/core-chip-input';
 import { shape, string } from 'prop-types';
+import React from 'react';
 import { fieldInputPropTypes, fieldMetaPropTypes } from 'redux-form';
-import ChipInput from 'material-ui-chip-input';
 
 // eslint-disable-next-line import/prefer-default-export
 export const MultiselectField = (props) => {

@@ -1,5 +1,5 @@
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Reboot from 'material-ui/CssBaseline';
+import Reboot from '@material-ui/core/CssBaseline';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import React, { Fragment } from 'react';
 import { AppContainer } from 'react-hot-loader';
 import { IntlProvider } from 'react-intl';

@@ -1,7 +1,7 @@
+import { Card } from '@material-ui/core';
+import { object } from 'prop-types';
 import React from 'react';
 import Avatar from 'react-avatar';
-import { object } from 'prop-types';
-import { Card } from 'material-ui';
 import './ProfileCard.less';
 
 const ProfileCard = ({ user }) => {

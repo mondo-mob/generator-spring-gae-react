@@ -1,6 +1,6 @@
+import { withStyles } from '@material-ui/core';
+import Chip from '@material-ui/core/Chip';
 import * as React from 'react';
-import { withStyles } from 'material-ui';
-import Chip from 'material-ui/Chip';
 
 import MaterialSelectField from './MaterialSelectField';
 

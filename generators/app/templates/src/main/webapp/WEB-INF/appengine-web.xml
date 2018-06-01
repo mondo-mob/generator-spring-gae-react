@@ -21,7 +21,8 @@
 
     <instance-class>B2</instance-class>
     -->
-
+    <!-- Recommend minimim size of F2 for memory with Spring -->
+    <instance-class>F2</instance-class>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
     </system-properties>

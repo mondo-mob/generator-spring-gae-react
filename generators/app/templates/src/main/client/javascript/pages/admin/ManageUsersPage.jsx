@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import Alert from 'react-s-alert';
-import { Link } from 'react-router';
-import { SubmissionError } from 'redux-form';
-import { arrayOf } from 'prop-types';
-import { Button, Chip, Table, TableBody, TableCell, TableHead, TableRow } from 'material-ui';
+import { Button, Chip, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import { arrayOf } from 'prop-types';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Alert from 'react-s-alert';
+import { SubmissionError } from 'redux-form';
 import AppPropTypes from '../../components/AppPropTypes';
-import api from '../../services/api';
-import './ManageUsersPage.less';
 import FormDialog from '../../components/forms/FormDialog';
 import InviteUserForm from '../../components/forms/InviteUserForm';
+import api from '../../services/api';
+import './ManageUsersPage.less';
 
 const UserTable = ({ users }) => (
   <Table className="user-table">

@@ -1,5 +1,5 @@
+import { Button } from '@material-ui/core';
 import React from 'react';
-import { Button } from 'material-ui';
 import { Link } from 'react-router';
 
 const NotFoundPage = () => (

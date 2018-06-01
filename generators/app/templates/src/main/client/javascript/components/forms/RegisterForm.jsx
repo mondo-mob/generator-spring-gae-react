@@ -1,8 +1,8 @@
+import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
-import { Button } from 'material-ui';
-import PropTypes from 'prop-types';
 import { required } from './validators';
 
 const RegisterForm = ({ handleSubmit, submitting }) => (
