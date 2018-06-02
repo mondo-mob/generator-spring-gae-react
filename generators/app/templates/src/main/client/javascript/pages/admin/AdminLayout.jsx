@@ -19,7 +19,7 @@ const AdminLayout = ({ children, openDrawer }) => (
           <MenuIcon />
         </IconButton>
         <Typography variant="title" color="inherit">
-          Material UI Next
+          Administration
         </Typography>
       </Toolbar>
     </AppBar>
