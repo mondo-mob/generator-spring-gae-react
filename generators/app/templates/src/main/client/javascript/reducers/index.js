@@ -5,6 +5,7 @@ import admin, * as fromAdmin from './admin';
 import auth, * as fromAuth from './auth';
 import users, * as fromUsers from './users';
 import drawer, * as fromDrawer from './drawer';
+import referenceData, * as fromReferenceData from './referenceData';
 
 /**
  * Root reducer for the app.
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   admin,
   users,
   drawer,
+  referenceData,
 });
 
 export const getLoggedInUser = state =>
@@ -29,5 +31,7 @@ export const getUsers = state => fromUsers.getAll(state.users);
 
 export const getOpenDrawer = state =>
   fromDrawer.getOpenDrawer(state.drawer);
+
+export const getReferenceDataRoles = state => fromReferenceData.getAll(state.referenceData, 'Role');
 
 export default rootReducer;

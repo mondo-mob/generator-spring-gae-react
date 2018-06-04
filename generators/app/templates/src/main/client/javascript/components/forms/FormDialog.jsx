@@ -57,14 +57,14 @@ class FormDialog extends Component {
 
     const actions = (
       <Fragment>
-        <Button variant="flat" onTouchTap={onCancel}>
+        <Button variant="flat" onClick={onCancel}>
           {cancelButtonText}
         </Button>
         {onDelete && <Button variant="flat" secondary onTouchTap={this.handleDelete}>{deleteButtonText}</Button>}
         <Button
           variant="flat"
           color="primary"
-          onTouchTap={this.handleSubmit}
+          onClick={this.handleSubmit}
         >
           {submitButtonText}
         </Button>

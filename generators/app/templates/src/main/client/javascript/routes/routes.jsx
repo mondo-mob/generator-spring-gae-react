@@ -4,7 +4,8 @@ import { history } from '../store';
 import {
   composeOnEnterHooks,
   loginRequired,
-  hasAnyRole,
+  loadRefData,
+  isAdminUser,
 } from './hooks';
 import Layout from '../pages/Layout';
 import AdminLayout from '../pages/admin/AdminLayout';
@@ -27,7 +28,7 @@ const getRoutes = () => (
     <Route
       path="/admin"
       component={AdminLayout}
-      onEnter={composeOnEnterHooks(loginRequired, hasAnyRole('ADMIN'))}
+      onEnter={composeOnEnterHooks(loginRequired, isAdminUser, loadRefData)}
     >
       <IndexRoute component={DashboardPage} />
       <Route path="users" component={ManageUsersPage} />
@@ -35,7 +36,11 @@ const getRoutes = () => (
       <Route path="*" component={NotFoundPage} />
     </Route>
 
-    <Route path="/" component={Layout}>
+    <Route
+      path="/"
+      component={Layout}
+      onEnter={composeOnEnterHooks(loadRefData)}
+    >
       <IndexRoute component={HomePage} />
       <Route path="*" component={NotFoundPage} />
     </Route>

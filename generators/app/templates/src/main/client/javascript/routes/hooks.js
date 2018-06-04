@@ -1,9 +1,9 @@
-import { intersection } from 'lodash';
 import applyEachSeries from 'async/applyEachSeries';
-
-import store from '../store';
-import { getLoggedInUser, getIsAuthenticated } from '../reducers';
+import { intersection } from 'lodash';
 import { fetchUser } from '../actions/auth';
+import { getIsAuthenticated, getLoggedInUser } from '../reducers';
+import store from '../store';
+import { fetchReferenceData } from '../actions/referenceData';
 
 const { dispatch, getState } = store;
 
@@ -41,7 +41,6 @@ export const loginRequired = (nextState, replace, callback) => {
     },
   );
 };
-
 export const hasAnyRole = (...roles) => (nextState, replace, callback) => {
   const user = getLoggedInUser(getState());
 
@@ -54,3 +53,13 @@ export const hasAnyRole = (...roles) => (nextState, replace, callback) => {
   replace(withHomepage());
   callback(new Error('User lacks required role'));
 };
+
+
+export const isAdminUser = hasAnyRole('ADMIN', 'SUPER');
+
+export const loadRefData = (nextState, replace, callback) => {
+  dispatch(fetchReferenceData()).then(() => {
+    callback();
+  });
+};
+

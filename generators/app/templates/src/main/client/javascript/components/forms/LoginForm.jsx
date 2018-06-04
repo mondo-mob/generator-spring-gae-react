@@ -4,9 +4,11 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
 import { email, required } from 'redux-form-validators';
+import FormError from './FormError';
 
-const LoginForm = ({ handleSubmit, submitting }) => (
+const LoginForm = ({ handleSubmit, submitting, error }) => (
   <form onSubmit={handleSubmit} noValidate>
+    <FormError value={error}/>
     <Field
       name="username"
       component={TextField}
@@ -46,6 +48,11 @@ const LoginForm = ({ handleSubmit, submitting }) => (
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired,
+  error: PropTypes.any,
+};
+
+LoginForm.defaultProps = {
+  error: undefined,
 };
 
 export default reduxForm({ form: 'login' })(LoginForm);

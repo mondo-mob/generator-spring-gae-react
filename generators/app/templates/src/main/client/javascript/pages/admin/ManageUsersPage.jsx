@@ -1,13 +1,15 @@
 import { Button, Chip, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import { arrayOf } from 'prop-types';
+import { arrayOf, array } from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
 import { SubmissionError } from 'redux-form';
 import AppPropTypes from '../../components/AppPropTypes';
 import FormDialog from '../../components/forms/FormDialog';
 import InviteUserForm from '../../components/forms/InviteUserForm';
+import { getReferenceDataRoles } from '../../reducers';
 import api from '../../services/api';
 import './ManageUsersPage.less';
 
@@ -45,6 +47,10 @@ UserTable.propTypes = {
 };
 
 class ManageUsersPage extends Component {
+  static propTypes = {
+    roles: array.isRequired,
+  };
+
   state = { inviteUserDialogOpen: false, users: [] };
 
   componentDidMount() {
@@ -57,15 +63,14 @@ class ManageUsersPage extends Component {
       .catch(error => Alert.error(`Error fetching users: ${error.message}`));
   }
 
-  handleInviteUser = values =>
-    api.users.invite(values)
-      .then(() => {
-        Alert.success('User invite sent!');
-        this.closeInviteUserDialog();
-      })
-      .catch((error) => {
-        throw new SubmissionError({ _error: error.message });
-      });
+  handleInviteUser = values => api.users.invite(values)
+    .then(() => {
+      Alert.success('User invite sent!');
+      this.closeInviteUserDialog();
+    })
+    .catch((error) => {
+      throw new SubmissionError({ _error: error.message });
+    });
 
   openInviteUserDialog = () => {
     this.setState({ inviteUserDialogOpen: true });
@@ -77,6 +82,7 @@ class ManageUsersPage extends Component {
 
   render() {
     const { inviteUserDialogOpen, users } = this.state;
+    const { roles } = this.props;
 
     return (
       <div className="manage-users-page">
@@ -101,10 +107,18 @@ class ManageUsersPage extends Component {
           open={inviteUserDialogOpen}
           onCancel={this.closeInviteUserDialog}
           onSubmit={this.handleInviteUser}
+          roles={roles}
         />
       </div>
     );
   }
 }
 
-export default ManageUsersPage;
+const mapStateToProps = state => ({
+  roles: getReferenceDataRoles(state).map(input => ({
+    value: input.id,
+    label: input.description,
+  })),
+});
+
+export default connect(mapStateToProps)(ManageUsersPage);

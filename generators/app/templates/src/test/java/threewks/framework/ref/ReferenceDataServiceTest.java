@@ -16,8 +16,7 @@ public class ReferenceDataServiceTest {
     @Test
     public void getReferenceData_WillReturnMapOfReferenceData() {
         ReferenceDataConfig config = new ReferenceDataConfigBuilder()
-            .registerClass(TestRef.class)
-            .registerClass(AnotherTestRef.class)
+            .registerClasses(TestRef.class, AnotherTestRef.class)
             .create();
 
         ReferenceDataService service = new ReferenceDataService(config);
@@ -34,7 +33,7 @@ public class ReferenceDataServiceTest {
     @Test
     public void getReferenceData_WillUseCustomTransformersIfSpecified() {
         ReferenceDataConfig config = new ReferenceDataConfigBuilder()
-            .registerClass(AnotherTestRef.class)
+            .registerClasses(AnotherTestRef.class)
             .registerCustomTransformer(
                 AnotherTestRef.class,
                 ref -> new ReferenceDataDto(ref.name(), ref.getDescription(), ref.ordinal(), "displayText", ref.getDisplayText()))

@@ -1,6 +1,7 @@
 package threewks.framework.ref;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,8 @@ public class ReferenceDataConfigBuilder {
     private final Map<Class<? extends ReferenceData>, Function<? extends ReferenceData, ReferenceDataDto>> customTransformers = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public ReferenceDataConfigBuilder registerClass(Class<? extends ReferenceData> referenceDataClass) {
-        registeredClasses.add(referenceDataClass);
+    public ReferenceDataConfigBuilder registerClasses(Class<? extends ReferenceData>... referenceDataClasses) {
+        registeredClasses.addAll(Arrays.asList(referenceDataClasses));
         return this;
     }
 

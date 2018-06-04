@@ -4,20 +4,9 @@ import { TextField } from 'redux-form-material-ui';
 import { email, required } from './validators';
 import ChipSelectField from '../common/ChipSelectField';
 
-const roles = [{
-  label: 'Admin',
-  value: 'ADMIN',
-}, {
-  label: 'Super',
-  value: 'SUPER',
-}, {
-  label: 'User',
-  value: 'USER',
-}];
-
 // eslint-disable-next-line react/prop-types
-const InviteUserForm = ({ error }) => (
-  <form>
+const InviteUserForm = ({ error, roles, handleSubmit }) => (
+  <form onSubmit={handleSubmit}>
     {error && <p style={{ color: 'red' }}>{error}</p>}
     <Field
       name="email"

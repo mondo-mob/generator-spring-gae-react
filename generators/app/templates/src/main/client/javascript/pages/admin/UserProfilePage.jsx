@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import Alert from 'react-s-alert';
 import Avatar from 'react-avatar';
 import { SubmissionError } from 'redux-form';
-import { object } from 'prop-types';
+import { object, array } from 'prop-types';
+import { connect } from 'react-redux';
 import UserProfileForm from '../../components/forms/UserProfileForm';
+import { getReferenceDataRoles } from '../../reducers';
 import api from '../../services/api';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import NotFoundPage from '../NotFoundPage';
@@ -13,6 +15,7 @@ import './UserProfilePage.less';
 class UserProfilePage extends Component {
   static propTypes = {
     params: object.isRequired,
+    roles: array.isRequired,
   };
 
   state = {
@@ -53,6 +56,7 @@ class UserProfilePage extends Component {
 
   render() {
     const { isFetching, user } = this.state;
+    const { roles } = this.props;
 
     if (isFetching) {
       return <LoadingIndicator size={60} />;
@@ -66,10 +70,17 @@ class UserProfilePage extends Component {
       <div className="user-profile-page">
         <Avatar className="avatar" name={user.name} email={user.email} size={96} round />
 
-        <UserProfileForm initialValues={user} onSubmit={this.handleSubmit} />
+        <UserProfileForm initialValues={user} roles={roles} onSubmit={this.handleSubmit} />
       </div>
     );
   }
 }
 
-export default UserProfilePage;
+const mapStateToProps = state => ({
+  roles: getReferenceDataRoles(state).map(input => ({
+    value: input.id,
+    label: input.description,
+  })),
+});
+
+export default connect(mapStateToProps)(UserProfilePage);

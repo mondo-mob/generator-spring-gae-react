@@ -1,23 +1,12 @@
 import { Button } from '@material-ui/core';
-import { bool, func } from 'prop-types';
+import { bool, func, array } from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
 import { email, required } from 'redux-form-validators';
 import ChipSelectField from '../common/ChipSelectField';
 
-const roles = [{
-  label: 'Admin',
-  value: 'ADMIN',
-}, {
-  label: 'Super',
-  value: 'SUPER',
-}, {
-  label: 'User',
-  value: 'USER',
-}];
-
-const UserProfileForm = ({ handleSubmit, submitting }) => (
+const UserProfileForm = ({ handleSubmit, submitting, roles }) => (
   <form onSubmit={handleSubmit}>
     <Field
       name="name"
@@ -70,6 +59,7 @@ const UserProfileForm = ({ handleSubmit, submitting }) => (
 UserProfileForm.propTypes = {
   handleSubmit: func.isRequired,
   submitting: bool.isRequired,
+  roles: array.isRequired,
 };
 
 export default reduxForm({ form: 'userProfile' })(UserProfileForm);

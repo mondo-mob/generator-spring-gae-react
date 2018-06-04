@@ -6,7 +6,9 @@ import * as model from '../../model';
 
 const styles = ({ palette: { error } }) => ({
   formError: {
+    marginTop: '0.1rem',
     color: error.main,
+    fontWeight: 500,
   },
 });
 

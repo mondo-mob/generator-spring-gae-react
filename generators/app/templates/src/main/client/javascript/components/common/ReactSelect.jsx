@@ -11,10 +11,10 @@ import Select from 'react-select';
 
 class Option extends React.Component {
   static propTypes = {
-    children: PropTypes.array.isRequired,
-    isFocused: PropTypes.array.isRequired,
-    isSelected: PropTypes.array.isRequired,
-    onFocus: PropTypes.array.isRequired,
+    children: PropTypes.any.isRequired,
+    isFocused: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+    onFocus: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
     option: PropTypes.object.isRequired,
   };
