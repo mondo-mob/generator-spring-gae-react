@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  * @param <F> From type
  * @param <T> To type
  */
+@FunctionalInterface
 public interface Transformer<F, T> extends Function<F, T> {
 
     default T transform(F from) {
