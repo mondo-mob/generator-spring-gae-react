@@ -6,7 +6,7 @@ import ChipSelectField from '../common/ChipSelectField';
 
 // eslint-disable-next-line react/prop-types
 const InviteUserForm = ({ error, roles, handleSubmit }) => (
-  <form onSubmit={handleSubmit}>
+  <form id="dialog-form" onSubmit={handleSubmit}>
     {error && <p style={{ color: 'red' }}>{error}</p>}
     <Field
       name="email"
@@ -20,6 +20,7 @@ const InviteUserForm = ({ error, roles, handleSubmit }) => (
         email('Enter a valid email'),
       ]}
       fullWidth
+      autoFocus
     />
     <Field
       name="roles"
