@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const parseString = require('xml2js').parseString;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const sourceDir = path.resolve(__dirname, 'src/main/client');
 
@@ -254,7 +255,7 @@ const productionConfig = {
     ]),
 
     // Minify JS in non-development environments
-    new webpack.optimize.UglifyJsPlugin(),
+    new UglifyJsPlugin(),
   ],
 
   module: {
