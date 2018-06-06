@@ -60,8 +60,10 @@ class FormDialog extends Component {
         <Button variant="flat" onClick={onCancel}>
           {cancelButtonText}
         </Button>
-        {onDelete && <Button variant="flat" secondary onTouchTap={this.handleDelete}>{deleteButtonText}</Button>}
+        {onDelete && <Button variant="flat" secondary onClick={this.handleDelete}>{deleteButtonText}</Button>}
         <Button
+          form="dialog-form" // Use this as the id of the form in the formComponent to enable submit on enter key
+          type="submit"
           variant="flat"
           color="primary"
           onClick={this.handleSubmit}
