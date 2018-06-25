@@ -84,6 +84,7 @@ module.exports = class extends Generator {
     copy('editorconfig', '.editorconfig');
     copy('eslintrc', '.eslintrc');
     copy('gitignore', '.gitignore');
+    copy('npmrc', '.npmrc');
     copy('java-version', '.java-version');
     copy('etc');
     copy('src');

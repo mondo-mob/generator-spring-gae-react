@@ -17,6 +17,7 @@ describe('generator-thundr-gae-react:app', () => {
       'README.md',
       '.editorconfig',
       '.gitignore',
+      '.npmrc',
       '.java-version',
       '.eslintrc',
       '.babelrc',
