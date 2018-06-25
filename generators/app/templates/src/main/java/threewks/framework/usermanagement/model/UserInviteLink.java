@@ -12,6 +12,7 @@ import threewks.util.DateTimeUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,7 @@ public class UserInviteLink {
     private String hashedCode;
     @Index
     private String email;
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
     private Ref<User> issuedBy;
     private OffsetDateTime created;
     private OffsetDateTime expires;
