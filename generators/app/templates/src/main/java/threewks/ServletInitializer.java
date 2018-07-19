@@ -26,4 +26,11 @@ public class ServletInitializer extends SpringBootServletInitializer {
             .profiles(profiles.toArray(new String[profiles.size()]));
     }
 
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+
+        // This will set to use COOKIE only which prevents spring from adding jsessionid to redirect urls locally
+        servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+    }
 }
