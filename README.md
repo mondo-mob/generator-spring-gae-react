@@ -18,6 +18,26 @@ Then generate your new project:
 yo spring-gae-react
 ```
 
+
+## Development
+
+It's always best to work on a generated project when updating. Each time you generate, do the following.
+
+**In this project directory**
+```
+npm link
+```
+
+**Then run this each time to generate a project**
+Note that this cleans your working directory, creates a new one, generates project and creates a local commit. The last part is important to help easily track your changes - you can compare your 
+local filesystem to the last commit and then know what updates you did.
+
+**Change the working dir** to suit your environment.
+```
+WORKING_DIR=~/dev/3wks; cd $WORKING_DIR && rm -rf $WORKING_DIR/tmp/test-spring && mkdir $WORKING_DIR/tmp/test-spring && cd $WORKING_DIR/tmp/test-spring && yo spring-gae-react && git init && git add . && git commit -m "initial commit"
+```
+
+
 ## To Do
 
 ### Client
