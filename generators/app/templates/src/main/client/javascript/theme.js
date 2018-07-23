@@ -14,7 +14,7 @@ export default createMuiTheme({
     },
     background: {
       default: defaultGrey,
-    }
+    },
   },
   spacing: {
     unit: spacing,
