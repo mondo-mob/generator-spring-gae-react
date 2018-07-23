@@ -59,7 +59,8 @@ public class UserControllerTest extends BaseControllerIntegrationTest {
     @Test
     public void saveUser_WillUpdateUser() throws Exception {
         UpdateUserRequest request = new UpdateUserRequest()
-            .setName("First Last")
+            .setFirstName("First")
+            .setLastName("Last")
             .setEmail("email@email.org");
         User user = byEmail("email", "password");
 
@@ -89,8 +90,9 @@ public class UserControllerTest extends BaseControllerIntegrationTest {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("error").value("Invalid request"))
             .andExpect(jsonPath("messages", containsInAnyOrder(
-                "email may not be empty",
-                "name may not be empty"
+                "email must not be blank",
+                "firstName must not be blank",
+                "lastName must not be blank"
             )));
     }
 
@@ -98,7 +100,8 @@ public class UserControllerTest extends BaseControllerIntegrationTest {
     @Test
     public void saveUser_WillFail_whenInvalidEmail() throws Exception {
         UpdateUserRequest request = new UpdateUserRequest()
-            .setName("First Last")
+            .setFirstName("First")
+            .setLastName("Last")
             .setEmail("THIS IS NOT AN EMAIL");
 
         mvc.perform(
@@ -109,7 +112,7 @@ public class UserControllerTest extends BaseControllerIntegrationTest {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("error").value("Invalid request"))
             .andExpect(jsonPath("messages", containsInAnyOrder(
-                "email not a well-formed email address"
+                "email must be a well-formed email address"
             )));
     }
 

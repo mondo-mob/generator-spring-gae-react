@@ -23,7 +23,8 @@ public class User extends BaseEntityCore implements GaeUser, Serializable {
     private String id;
     private String email;
     private String password;
-    private String name;
+    private String firstName;
+    private String lastName;
     private Set<Role> roles = new LinkedHashSet<>();
     private boolean enabled = true;
 
@@ -66,12 +67,21 @@ public class User extends BaseEntityCore implements GaeUser, Serializable {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public User setName(String name) {
-        this.name = name;
+    public User setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public User setLastName(String lastName) {
+        this.lastName = lastName;
         return this;
     }
 
@@ -118,6 +128,10 @@ public class User extends BaseEntityCore implements GaeUser, Serializable {
     public User setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    public String getFullName() {
+        return String.format("%s %s", firstName, lastName);
     }
 
     @Override

@@ -9,7 +9,8 @@ import java.util.Set;
 public class UserDto extends BaseDto {
     private String id;
     private String email;
-    private String name;
+    private String firstName;
+    private String lastName;
     private Set<Role> roles = new LinkedHashSet<>();
     private boolean enabled;
 
@@ -29,12 +30,20 @@ public class UserDto extends BaseDto {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Set<Role> getRoles() {

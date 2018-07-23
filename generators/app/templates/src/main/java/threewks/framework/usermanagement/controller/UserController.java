@@ -71,7 +71,7 @@ public class UserController {
 
     @RequestMapping(method = POST, path = "/invite/{inviteCode}")
     public User redeemInvitation(@PathVariable("inviteCode") String inviteCode, @RequestBody RedeemInvitationRequest request) {
-        return userInviteService.redeem(inviteCode, request.getName(), request.getPassword());
+        return userInviteService.redeem(inviteCode, request.getFirstName(), request.getLastName(), request.getPassword());
     }
 
     @RequestMapping(method = PUT, path = "/{userId}")

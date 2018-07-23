@@ -15,7 +15,8 @@ public class ToUserDto implements Transformer<User, UserDto> {
         dto.setId(user.getId());
         dto.setEmail(user.getEmail());
         dto.setEnabled(user.isEnabled());
-        dto.setName(user.getName());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
         dto.getRoles().addAll(user.getRoles());
         return dto;
     }

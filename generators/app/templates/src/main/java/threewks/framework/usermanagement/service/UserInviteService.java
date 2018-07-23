@@ -71,9 +71,10 @@ public class UserInviteService {
         });
     }
 
-    public User redeem(final String code, final String name, final String password) {
+    public User redeem(final String code, final String firstName, final String lastName, final String password) {
         Assert.notBlank(code, "Invite code is required");
-        Assert.notBlank(name, "Name is required");
+        Assert.notBlank(firstName, "First name is required");
+        Assert.notBlank(lastName, "Last name is required");
         Assert.notBlank(password, "Password is required");
         Assert.isTrue(password.length() >= MIN_PASSWORD_LENGTH,
             "Password must be " + MIN_PASSWORD_LENGTH + " characters or more in length");
@@ -97,7 +98,8 @@ public class UserInviteService {
             Assert.isFalse(user.isEnabled(), "Cannot redeem invite. User account already activated.");
 
             user.setRoles(invite.getRoles());
-            user.setName(name);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
             user.setPassword(passwordEncoder.encode(password));
             user.setEnabled(true);
             return userService.save(user);

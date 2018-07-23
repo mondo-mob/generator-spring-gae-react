@@ -19,7 +19,8 @@ public class ToUserDtoTest {
 
         assertThat(dto.getId(), is(user.getId()));
         assertThat(dto.getEmail(), is(user.getEmail()));
-        assertThat(dto.getName(), is(user.getName()));
+        assertThat(dto.getFirstName(), is(user.getFirstName()));
+        assertThat(dto.getLastName(), is(user.getLastName()));
         assertThat(dto.getRoles(), is(user.getRoles()));
         assertThat(dto.getCreated(), is(user.getCreated()));
         assertThat(dto.getUpdated(), is(user.getUpdated()));

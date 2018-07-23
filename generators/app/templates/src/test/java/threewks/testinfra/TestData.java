@@ -22,6 +22,8 @@ public class TestData {
 
     public static User user(String email, Role...roles) {
         return User.byEmail(email, "myPass")
+            .setFirstName("aFirstName")
+            .setLastName("aLastName")
             .setRoles(Arrays.asList(roles));
     }
 

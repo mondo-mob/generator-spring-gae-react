@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
-import { email, required } from './validators';
+import { email, required } from 'redux-form-validators';
 import ChipSelectField from '../common/ChipSelectField';
 
 // eslint-disable-next-line react/prop-types

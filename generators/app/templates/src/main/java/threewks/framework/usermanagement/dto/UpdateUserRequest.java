@@ -1,9 +1,9 @@
 package threewks.framework.usermanagement.dto;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
 import threewks.framework.usermanagement.Role;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,15 +14,26 @@ public class UpdateUserRequest {
     @Email
     private String email;
     @NotBlank
-    private String name;
+    private String firstName;
+    @NotBlank
+    private String lastName;
     private Set<Role> roles = new HashSet<>();
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public UpdateUserRequest setName(String name) {
-        this.name = name;
+    public UpdateUserRequest setFirstName(String firstName) {
+        this.firstName= firstName;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public UpdateUserRequest setLastName(String lastName) {
+        this.lastName= lastName;
         return this;
     }
 

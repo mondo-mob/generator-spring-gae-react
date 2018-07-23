@@ -26,7 +26,8 @@ public class BootstrapController {
 
         UpdateUserRequest request = new UpdateUserRequest()
             .setEmail(email.orElse("admin@3wks.com.au"))
-            .setName("Super User")
+            .setFirstName("Super")
+            .setLastName("User")
             .grantRoles(Role.SUPER, Role.ADMIN);
 
         userService.create(request, password);

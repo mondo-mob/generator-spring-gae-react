@@ -18,7 +18,8 @@ const UserTable = ({ users }) => (
     <TableHead>
       <TableRow>
         <TableCell>Email</TableCell>
-        <TableCell>Name</TableCell>
+        <TableCell>First name</TableCell>
+        <TableCell>Last name</TableCell>
         <TableCell>Roles</TableCell>
         <TableCell>Status</TableCell>
       </TableRow>
@@ -29,7 +30,8 @@ const UserTable = ({ users }) => (
           <TableCell>
             <Link to={`/admin/users/${user.id}`}>{user.email}</Link>
           </TableCell>
-          <TableCell>{user.name}</TableCell>
+          <TableCell>{user.firstName}</TableCell>
+          <TableCell>{user.lastName}</TableCell>
           <TableCell>
             <div className="roles">
               {user.roles.map(role => <Chip key={role} className="role" label={role} />)}

@@ -27,7 +27,8 @@ public class UserBootstrapper implements Bootstrapper {
     public void bootstrap() {
         UpdateUserRequest request = new UpdateUserRequest()
             .setEmail("admin@3wks.com.au")
-            .setName("Admin User")
+            .setFirstName("Admin")
+            .setLastName("User")
             .grantRoles(Role.ADMIN, Role.SUPER);
 
         if (userRepository.findAll(1).isEmpty()) {

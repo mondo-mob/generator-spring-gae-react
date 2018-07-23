@@ -44,7 +44,8 @@ public class UserService {
             }
 
             user.setRoles(request.getRoles());
-            user.setName(request.getName());
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
             return userRepository.save(user);
         });
     }
@@ -63,7 +64,8 @@ public class UserService {
 
     public User create(UpdateUserRequest request, String password) {
         User user = User.byEmail(request.getEmail(), passwordEncoder.encode(password))
-            .setName(request.getName())
+            .setFirstName(request.getFirstName())
+            .setLastName(request.getLastName())
             .setRoles(request.getRoles());
 
         return create(user);

@@ -3,17 +3,26 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
-import { required } from './validators';
+import { required } from 'redux-form-validators';
 
 const RegisterForm = ({ handleSubmit, submitting }) => (
   <form onSubmit={handleSubmit} noValidate>
     <Field
-      name="name"
+      name="firstName"
       margin="normal"
       component={TextField}
-      placeholder="Your full name"
-      label="Full name"
-      validate={required('Your full name is required')}
+      placeholder="Your first name"
+      label="First name"
+      validate={required('Your first name is required')}
+      fullWidth
+    />
+    <Field
+      name="lastName"
+      margin="normal"
+      component={TextField}
+      placeholder="Your last name"
+      label="Last name"
+      validate={required('Your last name is required')}
       fullWidth
     />
     <Field
