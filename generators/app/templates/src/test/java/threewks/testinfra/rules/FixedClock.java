@@ -24,4 +24,15 @@ public class FixedClock extends ExternalResource {
         super.after();
         DateTimeUtils.setClockSystem();
     }
+
+    public OffsetDateTime incrementOneMinute() {
+        return incrementMinutes(1);
+    }
+
+    public OffsetDateTime incrementMinutes(int minutes) {
+        OffsetDateTime newNowTime = OffsetDateTime.now().plusMinutes(minutes);
+        DateTimeUtils.setClockTime(newNowTime);
+        return newNowTime;
+    }
+
 }

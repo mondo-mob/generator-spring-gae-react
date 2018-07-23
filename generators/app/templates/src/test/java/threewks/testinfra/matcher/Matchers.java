@@ -1,18 +1,19 @@
 package threewks.testinfra.matcher;
 
 import com.googlecode.objectify.Ref;
-import threewks.framework.usermanagement.model.User;
 import org.assertj.core.api.Condition;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.springframework.test.util.ReflectionTestUtils;
+import threewks.framework.usermanagement.model.User;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Optional;
 
 public class Matchers {
 
@@ -99,6 +100,51 @@ public class Matchers {
             @Override
             public void describeTo(Description description) {
                 description.appendText(String.format("User with username '%s' on field %s", user, fieldName));
+            }
+        };
+    }
+
+    public static<T> Matcher<Optional> isPresent() {
+        return new TypeSafeMatcher<Optional>() {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Optional was not present as expected");
+            }
+
+            @Override
+            protected boolean matchesSafely(Optional item) {
+                return item.isPresent();
+            }
+        };
+    }
+
+    public static<T> Matcher<Optional> isPresent(T expectedItem) {
+        return new TypeSafeMatcher<Optional>() {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Optional was not present and equal to expected");
+            }
+
+            @Override
+            protected boolean matchesSafely(Optional item) {
+                return item.isPresent() && item.get().equals(expectedItem);
+            }
+        };
+    }
+
+    public static Matcher<Optional> isEmpty() {
+        return new TypeSafeMatcher<Optional>() {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Optional was not present as expected");
+            }
+
+            @Override
+            protected boolean matchesSafely(Optional item) {
+                return !item.isPresent();
             }
         };
     }

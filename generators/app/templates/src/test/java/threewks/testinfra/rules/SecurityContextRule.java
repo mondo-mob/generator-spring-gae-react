@@ -1,10 +1,10 @@
 package threewks.testinfra.rules;
 
-import org.junit.rules.ExternalResource;
 import org.mockito.Mockito;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import threewks.framework.usermanagement.Role;
 import threewks.framework.usermanagement.dto.AuthUser;
 import threewks.framework.usermanagement.model.User;
 import threewks.framework.usermanagement.model.UserAdapterGae;
@@ -12,7 +12,8 @@ import threewks.testinfra.TestData;
 
 import static org.mockito.Mockito.when;
 
-public class SecurityContextRule extends ExternalResource {
+public class SecurityContextRule extends SecurityContextReset {
+    private static final UserAdapterGae USER_ADAPTER = UserAdapterGae.byEmail(null);
     private final AuthUser authUser;
     private final User user;
 
@@ -22,16 +23,14 @@ public class SecurityContextRule extends ExternalResource {
 
     public SecurityContextRule(User user) {
         this.user = user;
-        this.authUser = (AuthUser) UserAdapterGae.byEmail(null).toUserDetails(user);
+        this.authUser = (AuthUser) USER_ADAPTER.toUserDetails(user);
     }
 
+    @Override
     protected void before() {
         initialiseSecurityContext(authUser);
     }
 
-    protected void after() {
-        SecurityContextHolder.clearContext();
-    }
 
     public AuthUser getAuthUser() {
         return authUser;
@@ -45,7 +44,13 @@ public class SecurityContextRule extends ExternalResource {
         return user.getId();
     }
 
-    private void initialiseSecurityContext(AuthUser authUser) {
+    public static void initialiseSecurityContextWithRoles(Role... roles) {
+        AuthUser authUser = (AuthUser) USER_ADAPTER.toUserDetails(TestData.user(roles));
+        initialiseSecurityContext(authUser);
+    }
+
+    private static void initialiseSecurityContext(AuthUser authUser) {
+        SecurityContextHolder.clearContext();
         Authentication authentication = Mockito.mock(Authentication.class);
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(authentication);

@@ -2,6 +2,7 @@ package threewks.testinfra.mail;
 
 import org.apache.commons.mail.util.MimeMessageParser;
 
+import javax.mail.Address;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,7 +34,7 @@ public class MailTestUtils {
 
     private static  List<String> getToAddresses(MimeMessageParser msg) {
         try {
-            return msg.getTo().stream().map(a -> a.toString()).collect(Collectors.toList());
+            return msg.getTo().stream().map(Address::toString).collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
