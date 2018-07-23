@@ -37,6 +37,13 @@ local filesystem to the last commit and then know what updates you did.
 WORKING_DIR=~/dev/3wks; cd $WORKING_DIR && rm -rf $WORKING_DIR/tmp/test-spring && mkdir $WORKING_DIR/tmp/test-spring && cd $WORKING_DIR/tmp/test-spring && yo spring-gae-react && git init && git add . && git commit -m "initial commit"
 ```
 
+## Publishing
+
+```
+npm version patch
+npm publish
+git push
+```
 
 ## To Do
 
