@@ -7,6 +7,10 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.contrib.gae.config.helper.ProfileExtractors;
 import org.springframework.contrib.gae.config.helper.ProfileResolver;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.SessionTrackingMode;
+import java.util.Collections;
 import java.util.List;
 
 public class ServletInitializer extends SpringBootServletInitializer {
