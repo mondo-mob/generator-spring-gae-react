@@ -17,11 +17,14 @@ import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import threewks.framework.security.CspBuilder;
 import threewks.framework.usermanagement.model.User;
 import threewks.framework.usermanagement.model.UserAdapterGae;
 import threewks.framework.usermanagement.service.UserService;
 
 import static org.springframework.http.HttpMethod.GET;
+import static threewks.framework.security.CspBuilder.CSP_SELF;
+import static threewks.framework.security.CspBuilder.CSP_UNSAFE_INLINE;
 
 @Configuration
 @SuppressWarnings("SpringJavaAutowiredFieldsWarningInspection")
@@ -83,7 +86,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
             .and()
                 .headers()
-                .contentSecurityPolicy("default-src 'self'; script-src 'self' https://cdn.polyfill.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com blob:; font-src 'self' https://fonts.gstatic.com");
+                .contentSecurityPolicy(new CspBuilder()
+                    .add("default-src", CSP_SELF)
+                    .add("script-src", CSP_SELF, "https://cdn.polyfill.io")
+                    .add("img-src", CSP_SELF, "https:", "data:")
+                    .add("frame-src", CSP_SELF, "https://calendar.google.com")
+                    .add("style-src", CSP_SELF, CSP_UNSAFE_INLINE, "https://fonts.googleapis.com", "blob:")
+                    .add("font-src", CSP_SELF, "https://fonts.gstatic.com")
+                    .build());
         // @formatter:on
     }
 
