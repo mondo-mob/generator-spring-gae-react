@@ -33,16 +33,16 @@ public class User extends BaseEntityCore implements GaeUser, Serializable {
     public static User byEmail(String email, String password) {
         User user = new User();
         user.id = UUID.randomUUID().toString();
-        user.email = email;
         user.password = password;
+        user.setEmail(email);
         return user;
     }
 
     public static User invitedByEmail(String email) {
         User user = new User();
         user.id = UUID.randomUUID().toString();
-        user.email = email;
         user.enabled = false;
+        user.setEmail(email);
         return user;
     }
 
@@ -80,7 +80,7 @@ public class User extends BaseEntityCore implements GaeUser, Serializable {
     }
 
     public User setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
         return this;
     }
 
