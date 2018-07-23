@@ -1,5 +1,8 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import Color from 'color';
+import grey from '@material-ui/core/colors/grey';
+
+const defaultGrey = grey[200];
 
 const spacing = 8;
 
@@ -9,6 +12,9 @@ export default createMuiTheme({
       main: Color('#8bd1cc').darken(0.15).hex(),
       contrastText: '#ffffff',
     },
+    background: {
+      default: defaultGrey,
+    }
   },
   spacing: {
     unit: spacing,

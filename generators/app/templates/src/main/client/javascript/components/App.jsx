@@ -1,4 +1,4 @@
-import Reboot from '@material-ui/core/CssBaseline';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import React, { Fragment } from 'react';
 import { AppContainer } from 'react-hot-loader';
@@ -10,11 +10,11 @@ import theme from '../theme';
 
 const App = () => (
   <Fragment>
-    <Reboot />
     <AppContainer>
       <Provider store={store}>
         <IntlProvider locale="en-AU">
           <MuiThemeProvider theme={theme}>
+            <CssBaseline />
             {getRoutes(store.getState, store.dispatch)}
           </MuiThemeProvider>
         </IntlProvider>
