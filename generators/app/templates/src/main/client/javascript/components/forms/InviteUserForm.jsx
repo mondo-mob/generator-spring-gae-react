@@ -1,8 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
-import { email, required } from 'redux-form-validators';
-import ChipSelectField from '../common/ChipSelectField';
+import { email, required, length } from 'redux-form-validators';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // eslint-disable-next-line react/prop-types
 const InviteUserForm = ({ error, roles, handleSubmit }) => (
@@ -24,16 +24,20 @@ const InviteUserForm = ({ error, roles, handleSubmit }) => (
     />
     <Field
       name="roles"
-      component={ChipSelectField}
-      options={roles}
+      component={TextField}
       label="Roles"
-      placeholder="Start typing roles..."
-      margin="normal"
+      select
+      SelectProps={{ multiple: true }}
       fullWidth
-      multi
-      removeSelected
-      clearable={false}
-    />
+      format={value => (Array.isArray(value) ? value : [])}
+      validate={[
+        length({ min: 1, message: 'At least one role must be selected' }),
+      ]}
+    >
+      {roles.map(role => (
+        <MenuItem key={role.value} value={role.value}>{role.label}</MenuItem>
+      ))}
+    </Field>
   </form>
 );
 

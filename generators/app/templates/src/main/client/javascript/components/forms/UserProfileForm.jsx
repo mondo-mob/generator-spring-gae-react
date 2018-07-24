@@ -3,8 +3,8 @@ import { bool, func, array } from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
-import { email, required } from 'redux-form-validators';
-import ChipSelectField from '../common/ChipSelectField';
+import { email, length, required } from 'redux-form-validators';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const UserProfileForm = ({ handleSubmit, submitting, roles }) => (
   <form onSubmit={handleSubmit}>
@@ -32,16 +32,19 @@ const UserProfileForm = ({ handleSubmit, submitting, roles }) => (
     />
     <Field
       name="roles"
-      component={ChipSelectField}
-      options={roles}
+      component={TextField}
       label="Roles"
-      margin="normal"
-      multi
-      placeholder="Start typing roles..."
+      select
+      SelectProps={{ multiple: true }}
       fullWidth
-      removeSelected
-      clearable={false}
-    />
+      validate={[
+        length({ min: 1, message: 'At least one role must be selected' }),
+      ]}
+    >
+      {roles.map(role => (
+        <MenuItem key={role.value} value={role.value}>{role.label}</MenuItem>
+      ))}
+    </Field>
 
     <div className="actions">
       <Button
