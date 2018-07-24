@@ -26,7 +26,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
         <cloudsdk.version>1.3.2</cloudsdk.version>
-        <appengine-sdk.version>1.9.63</appengine-sdk.version>
+        <appengine-sdk.version>1.9.64</appengine-sdk.version>
     </properties>
 
     <repositories>
