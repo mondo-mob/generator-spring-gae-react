@@ -35,6 +35,6 @@ public class InviteUsersEmailController {
         Map<String, Object> props = new HashMap<>();
         props.put("invite_link", String.format("%s/register/%s", this.host, code));
         props.put("subject", "You have been invited to the FIXME app");
-        emailService.send("invite-user", email, props);
+        emailService.send("invite-user.ftl", email, props);
     }
 }

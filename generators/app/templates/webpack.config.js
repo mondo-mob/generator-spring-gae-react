@@ -83,7 +83,7 @@ const commonConfig = {
 
       template: path.resolve(sourceDir, 'index.ejs'),
 
-      filename: `<%= _.unescape('${targetDir}')%>/WEB-INF/th/index.html`,
+      filename: `<%= _.unescape('${targetDir}')%>/WEB-INF/ftl/index.html`,
 
       alwaysWriteToDisk: true,
     }),
@@ -204,7 +204,7 @@ const developmentConfig = {
     add: (app) => {
       app.use(convert(proxy(['/_ah', '/api', '/login/', '/system'], { target: 'http://localhost:8080' })));
       app.use(convert(history({
-        index: 'WEB-INF/th/index.html',
+        index: 'WEB-INF/ftl/index.html',
       })));
     },
   },

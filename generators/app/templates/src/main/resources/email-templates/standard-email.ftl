@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<#macro standardEmail title="">
+<!doctype html>
+<html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>User invitation</title>
+    <title>${title}</title>
     <style>
         /* -------------------------------------
             GLOBAL RESETS
@@ -282,30 +283,7 @@
                             <table border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-
-                                        <p>Hi there,</p>
-                                        <p>You've been invited to collaborate on FIXME app. Click the button below to complete your account setup.</p>
-
-                                        <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                                            <tbody>
-                                            <tr>
-                                                <td align="left">
-                                                    <table border="0" cellpadding="0" cellspacing="0">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td><a th:href="${invite_link}" target="_blank">Complete setup</a></td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <p>Thanks!</p>
-
-
-
+                                        <#nested/>
                                     </td>
                                 </tr>
                             </table>
@@ -322,3 +300,4 @@
 </table>
 </body>
 </html>
+</#macro>

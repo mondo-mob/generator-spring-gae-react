@@ -52,7 +52,7 @@ public class IndexController {
 
         model.addAttribute("meta", meta);
 
-        // Generated index.html thymeleaf template from webpack
+        // Generated index.html template from webpack
         return "index";
     }
 }

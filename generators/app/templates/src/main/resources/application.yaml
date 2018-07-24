@@ -28,10 +28,6 @@ spring:
     jackson:
         default-property-inclusion: non_null
 
-    thymeleaf:
-        prefix: /WEB-INF/th/
-        mode: LEGACYHTML5
-
     contrib:
         gae:
             security:
