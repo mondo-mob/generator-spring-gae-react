@@ -1,6 +1,6 @@
 package threewks.framework.usermanagement.controller;
 
-    import org.apache.http.HttpStatus;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import threewks.framework.usermanagement.dto.RedeemInvitationRequest;
 import threewks.framework.usermanagement.dto.UpdateUserRequest;
+import threewks.framework.usermanagement.dto.UserDto;
+import threewks.framework.usermanagement.dto.transformer.ToUserDto;
 import threewks.framework.usermanagement.model.User;
 import threewks.framework.usermanagement.model.UserAdapterGae;
 import threewks.framework.usermanagement.service.InviteUserRequest;
@@ -17,8 +19,8 @@ import threewks.framework.usermanagement.service.UserInviteService;
 import threewks.framework.usermanagement.service.UserService;
 
 import javax.servlet.http.HttpServletResponse;
-    import javax.validation.Valid;
-    import java.util.HashSet;
+import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +46,12 @@ public class UserController {
     }
 
     @RequestMapping(method = GET, path = "/me")
-    public User user(HttpServletResponse response) {
+    public UserDto user(HttpServletResponse response) {
         Optional<User> currentUser = userAdapter.getCurrentUser();
 
         if (currentUser.isPresent()) {
             LOG.debug("Found existing authenticated user {}", currentUser.get().getEmail());
-            return response(currentUser);
+            return response(ToUserDto.INSTANCE.transform(currentUser));
         }
 
         LOG.debug("User not authenticated");
@@ -59,31 +61,39 @@ public class UserController {
 
     @RequestMapping(method = GET, path = "/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public User user(@PathVariable("userId") String userId) {
-        return response(userService.getById(userId));
+    public UserDto user(@PathVariable("userId") String userId) {
+        return response(ToUserDto.INSTANCE.transform(userService.findById(userId)));
     }
 
     @RequestMapping(method = POST, path = "/invite")
     @PreAuthorize("hasRole('ADMIN')")
-    public User inviteUser(@RequestBody @Valid InviteUserRequest inviteUserRequest) {
-        return userInviteService.invite(inviteUserRequest.getEmail(), new HashSet<>(inviteUserRequest.getRoles()));
+    public UserDto inviteUser(@RequestBody @Valid InviteUserRequest inviteUserRequest) {
+        return transform(userInviteService.invite(inviteUserRequest.getEmail(), new HashSet<>(inviteUserRequest.getRoles())));
     }
 
     @RequestMapping(method = POST, path = "/invite/{inviteCode}")
-    public User redeemInvitation(@PathVariable("inviteCode") String inviteCode, @RequestBody RedeemInvitationRequest request) {
-        return userInviteService.redeem(inviteCode, request.getFirstName(), request.getLastName(), request.getPassword());
+    public UserDto redeemInvitation(@PathVariable("inviteCode") String inviteCode, @RequestBody RedeemInvitationRequest request) {
+        return transform(userInviteService.redeem(inviteCode, request.getFirstName(), request.getLastName(), request.getPassword()));
     }
 
     @RequestMapping(method = PUT, path = "/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public User saveUser(@PathVariable("userId") String userId, @RequestBody @Valid UpdateUserRequest request) {
-        return userService.update(userId, request);
+    public UserDto saveUser(@PathVariable("userId") String userId, @RequestBody @Valid UpdateUserRequest request) {
+        return transform(userService.update(userId, request));
     }
 
     @RequestMapping(method = GET, path = "")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<User> list() {
-        return userService.list();
+    public List<UserDto> list() {
+        return transform(userService.list());
+    }
+
+    private UserDto transform(User user) {
+        return ToUserDto.INSTANCE.transform(user);
+    }
+
+    private List<UserDto> transform(List<User> users) {
+        return ToUserDto.INSTANCE.transform(users);
     }
 
 }

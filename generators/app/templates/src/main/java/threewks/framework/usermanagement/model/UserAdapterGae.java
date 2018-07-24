@@ -1,26 +1,29 @@
 package threewks.framework.usermanagement.model;
 
+import com.google.common.collect.Sets;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
-import threewks.framework.usermanagement.Role;
-import threewks.framework.usermanagement.dto.AuthUser;
-import threewks.framework.usermanagement.service.UserService;
-import threewks.util.Assert;
 import org.springframework.contrib.gae.security.UserAdapter;
 import org.springframework.contrib.gae.util.Nulls;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import threewks.framework.AuthenticationException;
+import threewks.framework.usermanagement.Role;
+import threewks.framework.usermanagement.dto.AuthUser;
+import threewks.framework.usermanagement.service.UserService;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class UserAdapterGae implements UserAdapter<User> {
-
+    private static final Supplier<AuthenticationException> UNAUTHENTICATED_EXCEPTION = () -> new AuthenticationException("Authenticated user required");
     private final boolean byEmail;
     private final UserService userService;
 
@@ -50,7 +53,7 @@ public class UserAdapterGae implements UserAdapter<User> {
 
     @Override
     public void mergeUserDetails(User user, UserDetails userDetails) {
-        List<Role> roles = transformToRoles(userDetails.getAuthorities());
+        Set<Role> roles = transformToRoles(userDetails.getAuthorities());
         user.setRoles(roles);
         user.setPassword(userDetails.getPassword());
         user.setEnabled(userDetails.isEnabled());
@@ -84,14 +87,18 @@ public class UserAdapterGae implements UserAdapter<User> {
 
     @SuppressWarnings("ConstantConditions")
     public User getCurrentUserRequired() {
-        Optional<User> currentUser = getCurrentUser();
-        return Assert.isPresent(currentUser, "Authenticated user required")
-            .get();
+        return getCurrentUser()
+            .orElseThrow(UNAUTHENTICATED_EXCEPTION);
+    }
+
+    public static String currentUserIdRequired() {
+        return currentUserId()
+            .orElseThrow(UNAUTHENTICATED_EXCEPTION);
     }
 
     public Optional<User> getCurrentUser() {
         return currentUserId()
-            .flatMap(userService::getById);
+            .flatMap(userService::findById);
     }
 
     public static Optional<Ref<User>> currentUserRef() {
@@ -104,17 +111,34 @@ public class UserAdapterGae implements UserAdapter<User> {
             .map(id -> Key.create(User.class, id));
     }
 
-    private static Optional<String> currentUserId() {
+    public static Optional<String> currentUserId() {
+        return currentAuthUser()
+            .map(AuthUser::getId);
+    }
+
+    public static void verifyCurrentUserOrAdmin(String userId) {
+        currentAuthUser()
+            .filter(usr -> containsAny(usr, Role.ADMIN) || usr.getId().equals(userId))
+            .orElseThrow(() -> new AuthenticationException("Authenticated user does not have access to user " + userId));
+    }
+
+    private static Optional<AuthUser> currentAuthUser() {
         Object principal = Nulls.ifNotNull(SecurityContextHolder.getContext().getAuthentication(), Authentication::getPrincipal);
         if (principal instanceof AuthUser) {
-            return Optional.of(((AuthUser) principal).getId());
+            return Optional.of(((AuthUser) principal));
         }
         return Optional.empty();
     }
 
-    private List<Role> transformToRoles(Collection<? extends GrantedAuthority> authorities) {
+    private static boolean containsAny(AuthUser usr, Role... roles) {
+        Set<Role> required = Sets.newHashSet(roles);
+        return transformToRoles(usr.getAuthorities()).stream()
+            .anyMatch(required::contains);
+    }
+
+    private static Set<Role> transformToRoles(Collection<? extends GrantedAuthority> authorities) {
         return authorities.stream()
             .map(Role::valueOf)
-            .collect(Collectors.toList());
+            .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

@@ -85,8 +85,12 @@ public class UserService {
             .map(LoginIdentifier::getUser);
     }
 
-    public Optional<User> getById(String userId) {
+    public Optional<User> findById(String userId) {
         return userRepository.findById(userId);
+    }
+
+    public User getById(String userId) {
+        return userRepository.getById(userId);
     }
 
     private void checkAvailability(String loginIdentifier) {

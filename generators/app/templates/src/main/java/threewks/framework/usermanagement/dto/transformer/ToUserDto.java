@@ -11,12 +11,12 @@ public class ToUserDto implements Transformer<User, UserDto> {
 
     @Override
     public UserDto apply(User user) {
-        UserDto dto = BaseDto.fromEntity(new UserDto(), user);
-        dto.setId(user.getId());
-        dto.setEmail(user.getEmail());
+        return fromInstance(user, new UserDto());
+    }
+
+    public <T extends UserDto> T fromInstance(User user, T existing) {
+        T dto = ToUserSummary.INSTANCE.fromInstance(user, BaseDto.fromEntity(existing, user));
         dto.setEnabled(user.isEnabled());
-        dto.setFirstName(user.getFirstName());
-        dto.setLastName(user.getLastName());
         dto.getRoles().addAll(user.getRoles());
         return dto;
     }

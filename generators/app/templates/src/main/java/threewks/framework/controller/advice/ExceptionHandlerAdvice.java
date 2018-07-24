@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import threewks.framework.AuthenticationException;
 import threewks.util.NotFoundException;
 
 import java.util.Collection;
@@ -30,7 +31,7 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
     @Order(100)
     @ExceptionHandler({IllegalArgumentException.class, HttpMessageConversionException.class})
     public ResponseEntity<ResponseError> handleBadRequestExceptions(Exception e) {
-        LOG.debug("Bad request", e);
+        LOG.info("Bad request", e);
         return buildResponseError(e, HttpStatus.BAD_REQUEST);
     }
 
@@ -39,6 +40,13 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ResponseError> handleNotFound(Exception e) {
         LOG.debug("Not found. {}: {}", e.getClass(), e.getMessage());
         return buildResponseError(e, HttpStatus.NOT_FOUND);
+    }
+
+    @Order(100)
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<ResponseError> handleUnauthorised(Exception e) {
+        LOG.debug("Unauthorised. {}: {}", e.getClass(), e.getMessage());
+        return buildResponseError(e, HttpStatus.UNAUTHORIZED);
     }
 
     @Order
