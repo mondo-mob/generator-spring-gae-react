@@ -62,4 +62,3 @@ export const loadRefData = (nextState, replace, callback) => {
     callback();
   });
 };
-

@@ -1,4 +1,6 @@
-import { shape, string, arrayOf, number } from 'prop-types';
+import {
+  shape, string, arrayOf, number,
+} from 'prop-types';
 
 export const error = shape({
   type: string,

@@ -22,4 +22,3 @@ export const fetchUsers = () => asyncAction(
 export const openInviteUserDialog = () => ({ type: 'OPEN_INVITE_USER_DIALOG' });
 
 export const closeInviteUserDialog = () => ({ type: 'CLOSE_INVITE_USER_DIALOG' });
-
