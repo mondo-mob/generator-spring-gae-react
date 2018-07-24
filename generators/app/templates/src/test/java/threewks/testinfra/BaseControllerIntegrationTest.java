@@ -3,13 +3,14 @@ package threewks.testinfra;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -28,11 +29,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
  * Use this base test when you specifically want to test integration with spring security features. If you want to test
  * a standalone controller using {@link MockMvc} then extend {@link BaseControllerTest}.
  */
-@RunWith(SpringRunner.class)
 @ActiveProfiles("junit")
 @SpringBootTest
 public abstract class BaseControllerIntegrationTest {
 
+    @ClassRule
+    public static final SpringClassRule springClassRule = new SpringClassRule();
+    @Rule
+    public final SpringMethodRule springMethodRule = new SpringMethodRule();
     @Rule
     public LocalServicesRule localServicesRule = new LocalServicesRule();
 
@@ -75,7 +79,5 @@ public abstract class BaseControllerIntegrationTest {
     protected AuthUser authUser(Role... roles) {
         return TestData.authUser(roles);
     }
-
-
 
 }
