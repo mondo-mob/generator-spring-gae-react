@@ -12,12 +12,6 @@
     "transform-class-properties"
   ],
   "env": {
-    "development": {
-      "plugins": [
-        // Enables React code to work with HMR.
-        "react-hot-loader/babel"
-      ]
-    },
     "test": {
       "presets": ["react", "env"]
     }

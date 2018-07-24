@@ -7,7 +7,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const parseString = require('xml2js').parseString;
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const convert = require('koa-connect');
+const history = require('connect-history-api-fallback');
+const proxy = require('http-proxy-middleware');
 
 const sourceDir = path.resolve(__dirname, 'src/main/client');
 
@@ -31,6 +33,7 @@ const isProduction = NODE_ENV === 'production';
  * Common Webpack configuration.
  */
 const commonConfig = {
+  mode: isProduction ? 'production' : 'development',
   output: {
     filename: '[name].js',
     path: `${targetDir}/client`,
@@ -44,19 +47,13 @@ const commonConfig = {
     extensions: ['.webpack.js', '.web.js', '.js', '.jsx'],
   },
 
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
+
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks(module) {
-        // this assumes your vendor imports exist in the node_modules directory
-        return module.context && module.context.indexOf('node_modules') !== -1;
-      },
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest', // But since there are no more common modules between them we end up with just the runtime code included in the manifest file
-    }),
-
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(NODE_ENV),
@@ -82,11 +79,11 @@ const commonConfig = {
 
     // Automatically generates index.html
     new HtmlWebpackPlugin({
-      title: '<%= project %>',
+      title: 'test-spring',
 
       template: path.resolve(sourceDir, 'index.ejs'),
 
-      filename: `<%= _.unescape('${targetDir}')%>/WEB-INF/th/index.html`,
+      filename: `${targetDir}/WEB-INF/th/index.html`,
 
       alwaysWriteToDisk: true,
     }),
@@ -180,21 +177,12 @@ const commonConfig = {
  */
 const developmentConfig = {
   devtool: 'cheap-eval-source-map',
-
-  entry: [
-    'react-hot-loader/patch', // activate HMR for React
-
-    'webpack-dev-server/client?http://localhost:3000',  // bundle the client for webpack-dev-serve
-
-    'webpack/hot/only-dev-server', // bundle the client for hot reloading
-
-    './src/main/client/javascript/index.jsx',
-  ],
+  entry: './src/main/client/javascript/index.jsx',
+  output: {
+    publicPath: '/',
+  },
 
   plugins: [
-    // Enable HMR globally
-    new webpack.HotModuleReplacementPlugin(),
-
     // Prints more readable module names in the browser console on HMR updates
     new webpack.NamedModulesPlugin(),
   ],
@@ -205,29 +193,19 @@ const developmentConfig = {
         test: /\.jsx?$/,
         include: path.resolve(sourceDir, 'javascript'),
         use: [
-          'react-hot-loader/webpack',  // Enable HMR support in loader chain
           'babel-loader',
         ],
       },
     ],
   },
-
-  devServer: {
+  serve: {
     port: 3000,
-    contentBase: targetDir,
-    hot: true,
-    historyApiFallback: {
-      index: 'WEB-INF/th/index.html',
-    },
-    proxy: {
-      '/_ah': 'http://localhost:8080',
-      '/api': 'http://localhost:8080',
-      '/login/': 'http://localhost:8080',
-      '/system': 'http://localhost:8080',
-    },
-    overlay: {
-      errors: true,
-      warnings: false,
+    content: [targetDir],
+    add: (app) => {
+      app.use(convert(proxy(['/_ah', '/api', '/login/', '/system'], { target: 'http://localhost:8080' })));
+      app.use(convert(history({
+        index: 'WEB-INF/th/index.html',
+      })));
     },
   },
 };
@@ -245,7 +223,7 @@ const productionConfig = {
 
   output: {
     // Hash bundles for easy and agressive caching
-    filename: '[name].[hash].js',
+    filename: '[name].[chunkhash].js',
   },
 
   plugins: [
@@ -253,9 +231,6 @@ const productionConfig = {
     new CleanWebpackPlugin([
       path.join(targetDir, 'client'),
     ]),
-
-    // Minify JS in non-development environments
-    new UglifyJsPlugin(),
   ],
 
   module: {
