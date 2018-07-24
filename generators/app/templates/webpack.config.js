@@ -79,11 +79,11 @@ const commonConfig = {
 
     // Automatically generates index.html
     new HtmlWebpackPlugin({
-      title: 'test-spring',
+      title: '<%= project %>',
 
       template: path.resolve(sourceDir, 'index.ejs'),
 
-      filename: `${targetDir}/WEB-INF/th/index.html`,
+      filename: `<%= _.unescape('${targetDir}')%>/WEB-INF/th/index.html`,
 
       alwaysWriteToDisk: true,
     }),
