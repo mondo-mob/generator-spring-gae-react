@@ -21,9 +21,8 @@ class LoginPage extends Component {
 
     return login(values)
       .then(() => navigateTo(next))
-      .catch(() => {
-        // TODO: Map real error message when we fix up rest api responses
-        throw new SubmissionError({ _error: { messages: ['Invalid login'] } });
+      .catch((error) => {
+        throw new SubmissionError({ _error: error.message });
       });
   };
 

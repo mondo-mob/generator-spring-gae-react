@@ -1,5 +1,6 @@
 package threewks.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import threewks.framework.security.CspBuilder;
+import threewks.framework.security.LoginAuthenticationFailureHandler;
 import threewks.framework.usermanagement.model.User;
 import threewks.framework.usermanagement.model.UserAdapterGae;
 import threewks.framework.usermanagement.service.UserService;
@@ -39,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationSuccessHandler restAuthenticationSuccessHandler;
     @Autowired
-    private AuthenticationFailureHandler restAuthenticationFailureHandler;
+    private AuthenticationFailureHandler loginAuthenticationFailureHandler;
     @Autowired
     private LogoutSuccessHandler restLogoutSuccessHandler;
     @Autowired
@@ -59,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             .and()
                 .exceptionHandling()
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new AntPathRequestMatcher("/api/**"))
             .and()
                 .rememberMe()
@@ -69,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login") // Stop spring from generating its own login page
                 .loginProcessingUrl("/api/login")
                 .successHandler(restAuthenticationSuccessHandler)
-                .failureHandler(restAuthenticationFailureHandler)
+                .failureHandler(loginAuthenticationFailureHandler)
                 .permitAll()
             .and()
                 .logout()
@@ -95,6 +98,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .add("font-src", CSP_SELF, "https://fonts.gstatic.com")
                     .build());
         // @formatter:on
+    }
+
+    @Bean
+    public AuthenticationFailureHandler loginAuthenticationFailureHandler(ObjectMapper objectMapper) {
+        return new LoginAuthenticationFailureHandler(objectMapper);
     }
 
     @Bean
