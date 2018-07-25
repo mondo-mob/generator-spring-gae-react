@@ -5,16 +5,17 @@ import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
 import org.springframework.contrib.gae.datastore.entity.IndexAware;
-import threewks.util.DateTimeUtils;
-import org.springframework.contrib.gae.search.IndexType;
 import org.springframework.contrib.gae.search.SearchIndex;
+import threewks.util.DateTimeUtils;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
  * Created and updated timestamps set. On creation updated and created are the same.
  * <p>
  */
+@SuppressWarnings("unchecked")
 public class BaseEntityCore implements IndexAware {
 
     public static class Fields {
@@ -23,11 +24,11 @@ public class BaseEntityCore implements IndexAware {
     }
 
     @Index
-    @SearchIndex(type = IndexType.NUMBER)
+    @SearchIndex
     private OffsetDateTime created;
 
     @Index
-    @SearchIndex(type = IndexType.NUMBER)
+    @SearchIndex
     private OffsetDateTime updated;
 
     @Ignore
@@ -36,8 +37,9 @@ public class BaseEntityCore implements IndexAware {
     /**
      * Handy for data migrations where you don't want to overwrite last updated.
      */
-    public void skipSettingAuditableFields() {
+    public <T extends BaseEntityCore> T skipSettingAuditableFields() {
         skipSettingAuditableFields = true;
+        return (T) this;
     }
 
     /**
@@ -59,6 +61,14 @@ public class BaseEntityCore implements IndexAware {
 
     public OffsetDateTime getUpdated() {
         return updated;
+    }
+
+    @JsonIgnore
+    public Duration getDurationFromCreatedToUpdated() {
+        if (created == null || updated == null) {
+            throw new IllegalStateException("Duration can not be calculated on entity not yet persisted");
+        }
+        return Duration.between(created, updated);
     }
 
     /**
@@ -84,6 +94,11 @@ public class BaseEntityCore implements IndexAware {
                 created = updated;
             }
         }
+    }
+
+    @JsonIgnore
+    public boolean isNewEntity() {
+        return created == null;
     }
 
 }

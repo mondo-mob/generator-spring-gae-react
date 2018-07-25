@@ -28,8 +28,20 @@ public class TestData {
     }
 
     public static <T extends BaseEntityCore> T setCreatedUpdated(T entity) {
-        ReflectionTestUtils.setField(entity, "created", OffsetDateTime.now().minusDays(1));
-        ReflectionTestUtils.setField(entity, "updated", OffsetDateTime.now());
+        OffsetDateTime now = OffsetDateTime.now();
+        return setCreatedUpdated(entity, now.minusDays(1), now);
+    }
+
+    public static <T extends BaseEntityCore> T setCreatedUpdated(T entity, OffsetDateTime created, OffsetDateTime updated) {
+        ReflectionTestUtils.setField(entity, "created", created);
+        ReflectionTestUtils.setField(entity, "updated", updated);
+        return entity;
+    }
+
+    public static <T extends BaseEntityCore> T setCreatedUpdatedAndBy(T entity) {
+        setCreatedUpdated(entity);
+        MockHelpers.setRef(entity, "createdBy", TestData.user("createdBy@email.com"));
+        MockHelpers.setRef(entity, "updatedBy", TestData.user("updatedBy@email.com"));
         return entity;
     }
 

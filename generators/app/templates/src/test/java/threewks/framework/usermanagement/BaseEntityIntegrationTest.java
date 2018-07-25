@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 import static java.util.UUID.randomUUID;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;

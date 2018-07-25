@@ -5,11 +5,10 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
+import org.springframework.contrib.gae.objectify.Refs;
+import org.springframework.contrib.gae.search.SearchIndex;
 import threewks.framework.usermanagement.model.User;
 import threewks.framework.usermanagement.model.UserAdapterGae;
-import org.springframework.contrib.gae.objectify.Refs;
-import org.springframework.contrib.gae.search.IndexType;
-import org.springframework.contrib.gae.search.SearchIndex;
 
 /**
  * Extension of {@link BaseEntityCore} to include who created and updated last if there was an authenticated user.
@@ -33,13 +32,13 @@ public abstract class BaseEntity extends BaseEntityCore {
     // Only pre-load when specifically asked, using the marker interface
     @Load(PreLoadAuditRefs.class)
     @Index
-    @SearchIndex(type = IndexType.IDENTIFIER)
+    @SearchIndex
     private Ref<User> createdBy;
 
     // Only pre-load when specifically asked, using the marker interface
     @Load(PreLoadAuditRefs.class)
     @Index
-    @SearchIndex(type = IndexType.IDENTIFIER)
+    @SearchIndex
     private Ref<User> updatedBy;
     @JsonIgnore
     public User getCreatedBy() {
