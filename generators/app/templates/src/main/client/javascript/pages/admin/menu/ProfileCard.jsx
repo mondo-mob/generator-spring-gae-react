@@ -1,4 +1,4 @@
-import { Card } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
 import { object } from 'prop-types';
 import React from 'react';
 import Avatar from 'react-avatar';

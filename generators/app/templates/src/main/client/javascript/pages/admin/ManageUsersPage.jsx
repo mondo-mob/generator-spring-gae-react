@@ -1,6 +1,12 @@
-import { Button, Chip, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import SendIcon from '@material-ui/icons/Send';
-import { arrayOf, array } from 'prop-types';
+import { array, arrayOf } from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -34,7 +40,7 @@ const UserTable = ({ users }) => (
           <TableCell>{user.lastName}</TableCell>
           <TableCell>
             <div className="roles">
-              {user.roles.map(role => <Chip key={role} className="role" label={role} />)}
+              {user.roles.map(role => <Chip key={role} className="role" label={role}/>)}
             </div>
           </TableCell>
           <TableCell>{user.status}</TableCell>
@@ -59,12 +65,6 @@ class ManageUsersPage extends Component {
     this.fetchUsers();
   }
 
-  fetchUsers() {
-    api.users.list()
-      .then(users => this.setState({ users }))
-      .catch(error => Alert.error(`Error fetching users: ${error.message}`));
-  }
-
   handleInviteUser = values => api.users.invite(values)
     .then(() => {
       Alert.success('User invite sent!');
@@ -81,6 +81,12 @@ class ManageUsersPage extends Component {
   closeInviteUserDialog = () => {
     this.setState({ inviteUserDialogOpen: false });
   };
+
+  fetchUsers() {
+    api.users.list()
+      .then(users => this.setState({ users }))
+      .catch(error => Alert.error(`Error fetching users: ${error.message}`));
+  }
 
   render() {
     const { inviteUserDialogOpen, users } = this.state;
@@ -99,7 +105,7 @@ class ManageUsersPage extends Component {
           <SendIcon className="invite-user-btn-icon"/>
         </Button>
 
-        <UserTable users={users} />
+        <UserTable users={users}/>
 
         <FormDialog
           title="Invite user"

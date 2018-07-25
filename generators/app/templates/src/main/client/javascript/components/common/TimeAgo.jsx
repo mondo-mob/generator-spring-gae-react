@@ -18,7 +18,8 @@ class TimeAgo extends React.Component {
   state = { showFull: false };
 
   toggleShowFull = () => {
-    this.setState({ showFull: !this.state.showFull });
+    const { showFull } = this.state;
+    this.setState({ showFull: !showFull });
   };
 
   render() {
@@ -29,17 +30,17 @@ class TimeAgo extends React.Component {
         {expandable && !showFull &&
         <Moment date={value} fromNow onClick={this.toggleShowFull} style={{ cursor: 'pointer' }}/>
         }
-        {expandable && showFull &&
-        <span
-          role="button"
-          onClick={this.toggleShowFull}
-          onKeyPress={this.toggleShowFull}
-          tabIndex={0}
-          style={{ cursor: 'pointer' }}
-        >
-          <FormattedDate value={value}/> <Time value={value}/>
-        </span>
-        }
+        {expandable && showFull && (
+          <span
+            role="button"
+            onClick={this.toggleShowFull}
+            onKeyPress={this.toggleShowFull}
+            tabIndex={0}
+            style={{ cursor: 'pointer' }}
+          >
+            <FormattedDate value={value}/> <Time value={value}/>
+          </span>
+        )}
         {!expandable &&
         <Moment date={value} fromNow/>
         }

@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import { bool, func, array } from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';

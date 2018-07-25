@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Alert from 'react-s-alert';
 import Avatar from 'react-avatar';
 import { SubmissionError } from 'redux-form';
-import { object, array } from 'prop-types';
+import { array, object } from 'prop-types';
 import { connect } from 'react-redux';
 import UserProfileForm from '../../components/forms/UserProfileForm';
 import { getReferenceDataRoles } from '../../reducers';
@@ -28,6 +28,17 @@ class UserProfilePage extends Component {
     this.fetchUser(params.userId);
   }
 
+  handleSubmit = values =>
+    api.users
+      .save(values)
+      .then(() => Alert.success('User updated'))
+      .catch((error) => {
+        Alert.error(<div>
+          {error.messages.map((err, index) => <p key={index}>{err}</p>)}
+        </div>);
+        throw new SubmissionError({ _error: error });
+      });
+
   fetchUser(userId) {
     this.setState({ isFetching: true });
 
@@ -43,34 +54,23 @@ class UserProfilePage extends Component {
       });
   }
 
-  handleSubmit = values =>
-    api.users
-      .save(values)
-      .then(() => Alert.success('User updated'))
-      .catch((error) => {
-        Alert.error(<div>
-          { error.messages.map((err, index) => <p key={index}>{err}</p>) }
-        </div>);
-        throw new SubmissionError({ _error: error });
-      });
-
   render() {
     const { isFetching, user } = this.state;
     const { roles } = this.props;
 
     if (isFetching) {
-      return <LoadingIndicator size={60} />;
+      return <LoadingIndicator size={60}/>;
     }
 
     if (!isFetching && !user) {
-      return <NotFoundPage />;
+      return <NotFoundPage/>;
     }
 
     return (
       <div className="user-profile-page">
-        <Avatar className="avatar" name={user.name} email={user.email} size={96} round />
+        <Avatar className="avatar" name={user.name} email={user.email} size={96} round/>
 
-        <UserProfileForm initialValues={user} roles={roles} onSubmit={this.handleSubmit} />
+        <UserProfileForm initialValues={user} roles={roles} onSubmit={this.handleSubmit}/>
       </div>
     );
   }

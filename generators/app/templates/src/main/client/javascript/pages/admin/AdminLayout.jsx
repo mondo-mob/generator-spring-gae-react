@@ -1,6 +1,11 @@
-import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core';
+import AppBar from '@material-ui/core/AppBar';
+import IconButton from '@material-ui/core/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
-import { arrayOf, func, node, oneOfType } from 'prop-types';
+import {
+  arrayOf, func, node, oneOfType,
+} from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
@@ -15,7 +20,7 @@ const AdminLayout = ({ children, openDrawer }) => (
 
     <AppBar position="static">
       <Toolbar>
-        <IconButton aria-label="Menu"color="inherit" onClick={openDrawer}>
+        <IconButton aria-label="Menu" color="inherit" onClick={openDrawer}>
           <MenuIcon />
         </IconButton>
         <Typography variant="title" color="inherit">

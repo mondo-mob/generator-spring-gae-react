@@ -1,4 +1,6 @@
-import { Card, CardContent, CardHeader } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import moment from 'moment';
 import React from 'react';
 import { compose } from 'redux';
