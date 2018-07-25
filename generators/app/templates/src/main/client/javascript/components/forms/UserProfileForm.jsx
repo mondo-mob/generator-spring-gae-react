@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { bool, func, array } from 'prop-types';
+import { array, bool, func } from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
@@ -7,14 +7,14 @@ import { email, length, required } from 'redux-form-validators';
 import MenuItem from '@material-ui/core/MenuItem';
 
 const UserProfileForm = ({ handleSubmit, submitting, roles }) => (
-  <form onSubmit={handleSubmit}>
+  <form onSubmit={handleSubmit} noValidate>
     <Field
       name="name"
       component={TextField}
       placeholder="Your full name"
       label="Full name"
       margin="normal"
-      validate={required('Your full name is required')}
+      validate={required({ msg: 'Your full name is required' })}
       fullWidth
     />
     <Field
@@ -25,8 +25,8 @@ const UserProfileForm = ({ handleSubmit, submitting, roles }) => (
       type="email"
       margin="normal"
       validate={[
-        required('Email address is required'),
-        email('Enter a valid email'),
+        required({ msg: 'Email address is required' }),
+        email({ msg: 'Enter a valid email' }),
       ]}
       fullWidth
     />

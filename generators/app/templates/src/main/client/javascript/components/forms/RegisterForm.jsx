@@ -13,7 +13,7 @@ const RegisterForm = ({ handleSubmit, submitting }) => (
       component={TextField}
       placeholder="Your first name"
       label="First name"
-      validate={required('Your first name is required')}
+      validate={required({ msg: 'Your first name is required' })}
       fullWidth
     />
     <Field
@@ -22,7 +22,7 @@ const RegisterForm = ({ handleSubmit, submitting }) => (
       component={TextField}
       placeholder="Your last name"
       label="Last name"
-      validate={required('Your last name is required')}
+      validate={required({ msg: 'Your last name is required' })}
       fullWidth
     />
     <Field
@@ -32,7 +32,7 @@ const RegisterForm = ({ handleSubmit, submitting }) => (
       label="Choose Password"
       component={TextField}
       type="password"
-      validate={required('Password is required')}
+      validate={required({ msg: 'Password is required' })}
       fullWidth
     />
 

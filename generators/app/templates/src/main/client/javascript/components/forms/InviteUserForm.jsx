@@ -1,12 +1,12 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { TextField } from 'redux-form-material-ui';
-import { email, required, length } from 'redux-form-validators';
+import { email, length, required } from 'redux-form-validators';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // eslint-disable-next-line react/prop-types
 const InviteUserForm = ({ error, roles, handleSubmit }) => (
-  <form id="dialog-form" onSubmit={handleSubmit}>
+  <form id="dialog-form" onSubmit={handleSubmit} noValidate>
     {error && <p style={{ color: 'red' }}>{error}</p>}
     <Field
       name="email"
@@ -16,8 +16,8 @@ const InviteUserForm = ({ error, roles, handleSubmit }) => (
       type="email"
       margin="normal"
       validate={[
-        required('Email address is required'),
-        email('Enter a valid email'),
+        required({ msg: 'Email address is required' }),
+        email({ msg: 'Enter a valid email' }),
       ]}
       fullWidth
       autoFocus
