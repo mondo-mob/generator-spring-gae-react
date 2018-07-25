@@ -1,6 +1,5 @@
 package threewks.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import threewks.framework.security.CspBuilder;
-import threewks.framework.security.LoginAuthenticationFailureHandler;
 import threewks.framework.usermanagement.model.User;
 import threewks.framework.usermanagement.model.UserAdapterGae;
 import threewks.framework.usermanagement.service.UserService;
@@ -41,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationSuccessHandler restAuthenticationSuccessHandler;
     @Autowired
-    private AuthenticationFailureHandler loginAuthenticationFailureHandler;
+    private AuthenticationFailureHandler restAuthenticationFailureHandler;
     @Autowired
     private LogoutSuccessHandler restLogoutSuccessHandler;
     @Autowired
@@ -61,7 +59,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new AntPathRequestMatcher("/api/**"))
             .and()
                 .rememberMe()
@@ -72,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login") // Stop spring from generating its own login page
                 .loginProcessingUrl("/api/login")
                 .successHandler(restAuthenticationSuccessHandler)
-                .failureHandler(loginAuthenticationFailureHandler)
+                .failureHandler(restAuthenticationFailureHandler)
                 .permitAll()
             .and()
                 .logout()
@@ -82,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                 .antMatchers("/_ah/**", "/system/**", "/task/**", "/cron/**").permitAll()  // protected by security-constraint in web.xml which delegates to GCP's IAM
-                .antMatchers("/api/login", "/api/users/me", "/api/error/**").permitAll()
+                .antMatchers("/api/login", "/api/users/me", "/api/users/invite/*", "/api/error/**").permitAll()
                 .antMatchers(GET, "/api/reference-data").permitAll()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/api/**").authenticated()
@@ -98,11 +95,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .add("font-src", CSP_SELF, "https://fonts.gstatic.com")
                     .build());
         // @formatter:on
-    }
-
-    @Bean
-    public AuthenticationFailureHandler loginAuthenticationFailureHandler(ObjectMapper objectMapper) {
-        return new LoginAuthenticationFailureHandler(objectMapper);
     }
 
     @Bean

@@ -11,18 +11,30 @@ import * as authActions from '../actions/auth';
 const isAdmin = user =>
   user && intersection(['super', 'admin'], user.roles).length > 0;
 
+const navigate = (navigateTo, user) => navigateTo(isAdmin(user) ? '/admin' : '/');
+
 class RegisterPage extends Component {
   static propTypes = {
     navigateTo: func.isRequired,
     params: object.isRequired,
     register: func.isRequired,
+    fetchUser: func.isRequired,
   };
+
+  componentDidMount() {
+    const { fetchUser, navigateTo } = this.props;
+    fetchUser().then((user) => {
+      if (user) {
+        navigate(navigateTo, user);
+      }
+    });
+  }
 
   handleSubmit = (values) => {
     const { params, register, navigateTo } = this.props;
     return register(params.inviteCode, values)
       .then((user) => {
-        navigateTo(isAdmin(user) ? '/admin' : '/');
+        navigate(navigateTo, user);
       })
       .catch((error) => {
         throw new SubmissionError({ _error: error.message });
