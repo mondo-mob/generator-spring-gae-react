@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import SendIcon from '@material-ui/icons/Send';
 import { func, array, arrayOf } from 'prop-types';
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
 import { SubmissionError } from 'redux-form';

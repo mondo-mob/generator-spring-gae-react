@@ -1,47 +1,34 @@
-import applyEachSeries from 'async/applyEachSeries';
 import { intersection } from 'lodash';
 import { fetchUser } from '../actions/auth';
-import { getIsAuthenticated, getLoggedInUser } from '../reducers';
+import { getLoggedInUser, getIsAuthenticated } from '../reducers';
 import store from '../store';
 import { fetchReferenceData } from '../actions/referenceData';
 
 const { dispatch, getState } = store;
 
-const withLogin = nextPage => ({ pathname: '/login', query: { next: nextPage } });
-const withHomepage = () => ({ pathname: '/' });
+const withLogin = nextPage => ({ pathname: '/login', search: nextPage === '/' ? null : `?next=${nextPage}` });
 
-export const composeOnEnterHooks = (...hooks) => (nextState, replace, callback) => {
-  applyEachSeries(hooks, nextState, replace, (error) => {
-    if (error) {
-      console.error('hook error:', error);
-    } // eslint-disable-line no-console
+export const loginRequired = (push, location, callback) => {
+  dispatch(fetchUser()).then(() => {
+    if (getIsAuthenticated(getState())) {
+      callback();
+    } else {
+      dispatch(push(withLogin(location.pathname)));
+      callback(new Error('Login required'));
+    }
+  }, (error) => {
+    dispatch(push(withLogin(location.pathname)));
+    callback(error);
+  });
+};
+
+export const loadRefData = (push, location, callback) => {
+  dispatch(fetchReferenceData()).then(() => {
     callback();
   });
 };
 
-export const loginRequired = (nextState, replace, callback) => {
-  const isAuthenticated = getIsAuthenticated(getState());
-  if (isAuthenticated) {
-    callback();
-    return;
-  }
-
-  dispatch(fetchUser()).then(
-    () => {
-      if (getIsAuthenticated(getState())) {
-        callback();
-      } else {
-        replace(withLogin(nextState.location.pathname));
-        callback(new Error('Login required'));
-      }
-    },
-    (error) => {
-      replace(withLogin(nextState.location.pathname));
-      callback(error);
-    },
-  );
-};
-export const hasAnyRole = (...roles) => (nextState, replace, callback) => {
+export const hasAnyRole = (...roles) => (push, location, callback) => {
   const user = getLoggedInUser(getState());
 
   const hasRequiredRole = user && intersection(roles, user.roles).length > 0;
@@ -50,15 +37,8 @@ export const hasAnyRole = (...roles) => (nextState, replace, callback) => {
     return;
   }
 
-  replace(withHomepage());
+  dispatch(push('/'));
   callback(new Error('User lacks required role'));
 };
 
-
 export const isAdminUser = hasAnyRole('ADMIN', 'SUPER');
-
-export const loadRefData = (nextState, replace, callback) => {
-  dispatch(fetchReferenceData()).then(() => {
-    callback();
-  });
-};

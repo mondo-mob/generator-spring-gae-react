@@ -14,7 +14,7 @@ import './UserProfilePage.less';
 
 class UserProfilePage extends Component {
   static propTypes = {
-    params: object.isRequired,
+    match: object.isRequired,
     roles: array.isRequired,
   };
 
@@ -24,7 +24,7 @@ class UserProfilePage extends Component {
   };
 
   componentDidMount() {
-    const { params } = this.props;
+    const { match: { params } } = this.props;
     this.fetchUser(params.userId);
   }
 

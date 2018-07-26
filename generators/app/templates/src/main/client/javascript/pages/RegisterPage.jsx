@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { SubmissionError } from 'redux-form';
 import { func, object } from 'prop-types';
 import { intersection } from 'lodash';
@@ -16,7 +16,7 @@ const navigate = (navigateTo, user) => navigateTo(isAdmin(user) ? '/admin' : '/'
 class RegisterPage extends Component {
   static propTypes = {
     navigateTo: func.isRequired,
-    params: object.isRequired,
+    match: object.isRequired,
     register: func.isRequired,
     fetchUser: func.isRequired,
   };
@@ -31,7 +31,8 @@ class RegisterPage extends Component {
   }
 
   handleSubmit = (values) => {
-    const { params, register, navigateTo } = this.props;
+    const { match: { params }, register, navigateTo } = this.props;
+
     return register(params.inviteCode, values)
       .then((user) => {
         navigate(navigateTo, user);

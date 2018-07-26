@@ -1,8 +1,10 @@
 import { func, object } from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { SubmissionError } from 'redux-form';
+import queryString from 'query-string';
+
 import * as authActions from '../actions/auth';
 import LoginForm from '../components/forms/LoginForm';
 import CenteredPanelLayout from './CenteredPanelLayout';
@@ -17,7 +19,8 @@ class LoginPage extends Component {
 
   handleSubmit = (values) => {
     const { location, login, navigateTo } = this.props;
-    const next = location.query.next || '/';
+    const query = queryString.parse(location.search);
+    const next = query.next || '/admin';
 
     return login(values)
       .then(() => navigateTo(next))

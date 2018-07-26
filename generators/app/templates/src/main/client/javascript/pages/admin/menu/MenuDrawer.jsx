@@ -13,7 +13,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import { bool, func, object } from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import * as authActions from '../../../actions/auth';
 import { closeDrawer as closeDrawerAction } from '../../../actions/drawer';
 import { getLoggedInUser, getOpenDrawer } from '../../../reducers';

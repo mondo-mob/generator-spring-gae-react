@@ -1,17 +1,21 @@
 import { createStore, applyMiddleware } from 'redux';
-import { browserHistory } from 'react-router';
 import thunk from 'redux-thunk';
 import reduxCatch from 'redux-catch';
-import { routerMiddleware, syncHistoryWithStore } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './reducers';
 import { logReduxError } from './util/errors';
 
-const middleware = [routerMiddleware(browserHistory), thunk, reduxCatch(logReduxError)];
+// Create a history of your choosing (we're using a browser history in this case)
+export const history = createHistory();
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));
+const middleware = [
+  routerMiddleware(history),
+  thunk,
+  reduxCatch(logReduxError),
+];
 
-// Create an enhanced history that syncs navigation events with the store
-export const history = syncHistoryWithStore(browserHistory, store);
+const store = createStore(connectRouter(history)(rootReducer), composeWithDevTools(applyMiddleware(...middleware)));
 
 export default store;
