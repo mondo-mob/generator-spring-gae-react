@@ -9,12 +9,21 @@ import MenuItem from '@material-ui/core/MenuItem';
 const UserProfileForm = ({ handleSubmit, submitting, roles }) => (
   <form onSubmit={handleSubmit} noValidate>
     <Field
-      name="name"
+      name="firstName"
       component={TextField}
-      placeholder="Your full name"
-      label="Full name"
+      placeholder="Your first name"
+      label="First name"
       margin="normal"
-      validate={required({ msg: 'Your full name is required' })}
+      validate={required({ msg: 'Your first name is required' })}
+      fullWidth
+    />
+    <Field
+      name="lastName"
+      component={TextField}
+      placeholder="Your last name"
+      label="Last name"
+      margin="normal"
+      validate={required({ msg: 'Your last name is required' })}
       fullWidth
     />
     <Field

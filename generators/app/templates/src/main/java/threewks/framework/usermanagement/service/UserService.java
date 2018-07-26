@@ -93,6 +93,12 @@ public class UserService {
         return userRepository.getById(userId);
     }
 
+    public User changePassword(String userId, String password) {
+        User user = userRepository.getById(userId);
+        user.setPassword(passwordEncoder.encode(password));
+        return userRepository.save(user);
+    }
+
     private void checkAvailability(String loginIdentifier) {
         Assert.notNull(loginIdentifier, "Availability check failed. Login identifier is required");
 
@@ -100,6 +106,5 @@ public class UserService {
             throw new LoginIdentifierUnavailableException(loginIdentifier);
         }
     }
-
 
 }

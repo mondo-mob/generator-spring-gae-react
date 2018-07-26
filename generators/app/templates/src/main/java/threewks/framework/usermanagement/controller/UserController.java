@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import threewks.controller.dto.SimpleRequest;
 import threewks.framework.usermanagement.dto.RedeemInvitationRequest;
 import threewks.framework.usermanagement.dto.UpdateUserRequest;
 import threewks.framework.usermanagement.dto.UserDto;
@@ -86,6 +87,12 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> list() {
         return transform(userService.list());
+    }
+
+    @RequestMapping(method = POST, path = "/{userId}/change-password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserDto changePassword(@PathVariable("userId") String userId, @RequestBody SimpleRequest<String> request) {
+        return transform(userService.changePassword(userId, request.getValue()));
     }
 
     private UserDto transform(User user) {

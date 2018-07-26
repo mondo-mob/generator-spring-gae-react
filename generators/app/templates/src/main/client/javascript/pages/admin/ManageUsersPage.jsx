@@ -6,20 +6,22 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import SendIcon from '@material-ui/icons/Send';
-import { array, arrayOf } from 'prop-types';
+import { func, array, arrayOf } from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
 import { SubmissionError } from 'redux-form';
+
 import AppPropTypes from '../../components/AppPropTypes';
 import FormDialog from '../../components/forms/FormDialog';
 import InviteUserForm from '../../components/forms/InviteUserForm';
+import ChangePasswordForm from '../../components/forms/ChangePasswordForm';
 import { getReferenceDataRoles } from '../../reducers';
 import api from '../../services/api';
 import './ManageUsersPage.less';
 
-const UserTable = ({ users }) => (
+const UserTable = ({ users, onChangePassword }) => (
   <Table className="user-table">
     <TableHead>
       <TableRow>
@@ -28,6 +30,7 @@ const UserTable = ({ users }) => (
         <TableCell>Last name</TableCell>
         <TableCell>Roles</TableCell>
         <TableCell>Status</TableCell>
+        <TableCell/>
       </TableRow>
     </TableHead>
     <TableBody>
@@ -44,6 +47,13 @@ const UserTable = ({ users }) => (
             </div>
           </TableCell>
           <TableCell>{user.status}</TableCell>
+          <TableCell>
+            <Button
+              onClick={() => onChangePassword(user.id)}
+            >
+              Change password
+            </Button>
+          </TableCell>
         </TableRow>
       ))}
     </TableBody>
@@ -52,6 +62,7 @@ const UserTable = ({ users }) => (
 
 UserTable.propTypes = {
   users: arrayOf(AppPropTypes.user).isRequired,
+  onChangePassword: func.isRequired,
 };
 
 class ManageUsersPage extends Component {
@@ -59,7 +70,7 @@ class ManageUsersPage extends Component {
     roles: array.isRequired,
   };
 
-  state = { inviteUserDialogOpen: false, users: [] };
+  state = { inviteUserDialogOpen: false, changePasswordDialogUserId: null, users: [] };
 
   componentDidMount() {
     this.fetchUsers();
@@ -74,12 +85,32 @@ class ManageUsersPage extends Component {
       throw new SubmissionError({ _error: error.message });
     });
 
+  handleChangePassword = (values) => {
+    const { changePasswordDialogUserId } = this.state;
+    api.users.changePassword(changePasswordDialogUserId, values.password)
+      .then(() => {
+        Alert.success('Password changed');
+        this.closeChangePasswordDialog();
+      })
+      .catch((error) => {
+        throw new SubmissionError({ _error: error.message });
+      });
+  };
+
   openInviteUserDialog = () => {
     this.setState({ inviteUserDialogOpen: true });
   };
 
   closeInviteUserDialog = () => {
     this.setState({ inviteUserDialogOpen: false });
+  };
+
+  openChangePasswordDialog = (userId) => {
+    this.setState({ changePasswordDialogUserId: userId });
+  };
+
+  closeChangePasswordDialog = () => {
+    this.setState({ changePasswordDialogUserId: null });
   };
 
   fetchUsers() {
@@ -89,7 +120,7 @@ class ManageUsersPage extends Component {
   }
 
   render() {
-    const { inviteUserDialogOpen, users } = this.state;
+    const { inviteUserDialogOpen, changePasswordDialogUserId, users } = this.state;
     const { roles } = this.props;
 
     return (
@@ -105,7 +136,7 @@ class ManageUsersPage extends Component {
           <SendIcon className="invite-user-btn-icon"/>
         </Button>
 
-        <UserTable users={users}/>
+        <UserTable users={users} onChangePassword={this.openChangePasswordDialog}/>
 
         <FormDialog
           title="Invite user"
@@ -116,6 +147,16 @@ class ManageUsersPage extends Component {
           onCancel={this.closeInviteUserDialog}
           onSubmit={this.handleInviteUser}
           roles={roles}
+        />
+
+        <FormDialog
+          title="Change password"
+          submitButtonText="Change"
+          formComponent={ChangePasswordForm}
+          formName="changePassword"
+          open={!!changePasswordDialogUserId}
+          onCancel={this.closeChangePasswordDialog}
+          onSubmit={this.handleChangePassword}
         />
       </div>
     );

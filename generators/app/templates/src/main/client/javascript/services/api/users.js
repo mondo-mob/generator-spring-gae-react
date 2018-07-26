@@ -24,6 +24,9 @@ const get = userId =>
 const save = user =>
   requestJSON(`/users/${user.id}`, 'PUT', user);
 
+const changePassword = (userId, password) =>
+  requestJSON(`/users/${userId}/change-password`, 'POST', { value: password });
+
 export default {
   get,
   invite,
@@ -33,4 +36,5 @@ export default {
   me,
   redeemInvite,
   save,
+  changePassword,
 };
