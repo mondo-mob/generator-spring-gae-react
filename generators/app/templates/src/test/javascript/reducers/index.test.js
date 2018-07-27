@@ -6,10 +6,4 @@ describe('Root reducer', () => {
 
     expect(state.form).toBeDefined();
   });
-
-  test('returns routing in state', () => {
-    const state = rootReducer(undefined, {});
-
-    expect(state.routing).toBeDefined();
-  });
 });
