@@ -11,7 +11,7 @@ public class ObjectifyConfig implements ObjectifyConfigurer {
 
     @Override
     public Collection<Class<?>> registerObjectifyEntities() {
-        return new ObjectifyEntityScanner("threewks.**.model")
+        return new ObjectifyEntityScanner("threewks")
             .getEntityClasses();
     }
 }
