@@ -81,4 +81,9 @@ public abstract class BaseEntity extends BaseEntityCore {
             .orElse(null);
     }
 
+    public <T extends BaseEntity> void copyFrom(T from){
+        super.copyFrom(from);
+        this.createdBy = Ref.create(from.getCreatedBy());
+        this.updatedBy = Ref.create(from.getUpdatedBy());
+    }
 }

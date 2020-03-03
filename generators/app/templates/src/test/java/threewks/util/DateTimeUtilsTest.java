@@ -26,9 +26,10 @@ public class DateTimeUtilsTest {
     @Test
     public void now_willReturnFixedTime_whenClockSetFixed() {
         OffsetDateTime fixedNow = OffsetDateTime.parse("2017-06-01T11:12:13+10:00");
-        DateTimeUtils.setClockTime(fixedNow);
+        TestDateTimeUtils.setClockTime(fixedNow);
 
-        assertThat(DateTimeUtils.now()).isEqualTo(fixedNow);
+        assertThat(DateTimeUtils.now().toInstant())
+            .isEqualTo(fixedNow.toInstant());
     }
 
 }

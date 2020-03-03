@@ -1,0 +1,6 @@
+
+app:
+    host: http://junit-test-domain
+
+gcs:
+    default-bucket: test-bucket

@@ -1,6 +1,8 @@
 package threewks.util;
 
 import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -28,20 +30,20 @@ public final class DateTimeUtils {
         return OffsetDateTime.now(clock.withZone(zoneId));
     }
 
-    public static void setClockTime(OffsetDateTime zonedDateTime) {
-        setClockTime(zonedDateTime, ZoneId.systemDefault());
+    public static LocalDate nowLocalDate() {
+        return LocalDate.now(clock);
     }
 
-    public static void setClockTime(OffsetDateTime zonedDateTime, ZoneId zoneId) {
-        setClock(Clock.fixed(zonedDateTime.toInstant(), zoneId));
+    public static LocalDate nowLocalDate(ZoneId zoneId) {
+        return LocalDate.now(clock.withZone(zoneId));
     }
 
-    public static void setClock(Clock clock) {
-        DateTimeUtils.clock = clock;
-    }
-
-    public static void setClockSystem() {
+    static void setClockSystem() {
         DateTimeUtils.clock = Clock.systemDefaultZone();
+    }
+
+    static void setClock(Instant instant, ZoneId zoneId) {
+        DateTimeUtils.clock = Clock.fixed(instant, zoneId);
     }
 
 }

@@ -101,4 +101,9 @@ public class BaseEntityCore implements IndexAware {
         return created == null;
     }
 
+    <T extends BaseEntityCore> void copyFrom(T from){
+        this.created = from.getCreated();
+        this.updated = from.getUpdated();
+    }
+
 }

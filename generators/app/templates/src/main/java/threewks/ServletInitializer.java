@@ -1,5 +1,6 @@
 package threewks;
 
+import com.google.appengine.api.utils.SystemProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -12,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.SessionTrackingMode;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class ServletInitializer extends SpringBootServletInitializer {
     private static final Logger LOG = LoggerFactory.getLogger(ServletInitializer.class);
@@ -27,7 +29,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
         LOG.info("Setting profiles: {}", profiles);
 
         return application.sources(Application.class)
-            .profiles(profiles.toArray(new String[profiles.size()]));
+            .profiles(profiles.toArray(new String[0]));
     }
 
     @Override
@@ -36,5 +38,14 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
         // This will set to use COOKIE only which prevents spring from adding jsessionid to redirect urls locally
         servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+        if (isProduction()) {
+            LOG.info("Setting session cookie config secure flag to true");
+            servletContext.getSessionCookieConfig().setSecure(true);
+        }
     }
+
+    private boolean isProduction() {
+        return Objects.equals(SystemProperty.Environment.Value.Production.name(), SystemProperty.Environment.environment.get());
+    }
+
 }

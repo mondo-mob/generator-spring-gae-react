@@ -15,19 +15,19 @@ import threewks.framework.usermanagement.model.User;
 import threewks.testinfra.BaseIntegrationTest;
 import threewks.testinfra.TestData;
 import threewks.testinfra.rules.SecurityContextRule;
+import threewks.util.DateTimeUtils;
 
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static java.util.UUID.randomUUID;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class BaseEntityIntegrationTest extends BaseIntegrationTest {
     @Rule
-    public SecurityContextRule securityContextRule = new SecurityContextRule();
+    public SecurityContextRule securityContextReset = new SecurityContextRule();
     private User user;
 
     private ObjectifyStringRepository<TestEntity> testEntityRepository;
@@ -37,7 +37,7 @@ public class BaseEntityIntegrationTest extends BaseIntegrationTest {
         localServicesRule.registerAdditionalEntities(TestEntity.class);
         testEntityRepository = new BaseObjectifyStringRepository<TestEntity>(objectifyProxy, searchService, TestEntity.class) {
         };
-        user = userRepository.save(securityContextRule.getUser());
+        user = userRepository.save(securityContextReset.getUser());
     }
 
 
@@ -63,7 +63,7 @@ public class BaseEntityIntegrationTest extends BaseIntegrationTest {
     @Test
     public void save_willSetUpdatedByButNotOverrideCreatedBy_whenAlreadyCreated() {
         TestEntity existing = new TestEntity();
-        OffsetDateTime original = OffsetDateTime.now();
+        OffsetDateTime original = DateTimeUtils.now();
         User originalUser = userRepository.save(TestData.user("some-other@email.org"));
 
         ReflectionTestUtils.setField(existing, "created", original);
@@ -82,7 +82,7 @@ public class BaseEntityIntegrationTest extends BaseIntegrationTest {
     public void save_willNotSetCreatedBy_whenAlreadyCreatedWithNullCreatedBy() {
         // This scenario happens if the entity was created by an unauthenticated user. We don't want to override that.
         TestEntity existing = new TestEntity();
-        OffsetDateTime original = OffsetDateTime.now();
+        OffsetDateTime original = DateTimeUtils.now();
 
         ReflectionTestUtils.setField(existing, "created", original);
         ReflectionTestUtils.setField(existing, "updated", original);
@@ -105,9 +105,9 @@ public class BaseEntityIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void reindex_willNotChangeAuditableFields() {
+    public void reindex_willNotChangeAuditableFields() throws InterruptedException {
         TestEntity existing = new TestEntity();
-        OffsetDateTime original = OffsetDateTime.now().minusDays(100);
+        OffsetDateTime original = DateTimeUtils.now().minusDays(100).truncatedTo(ChronoUnit.MILLIS);
         ReflectionTestUtils.setField(existing, "created", original);
         ReflectionTestUtils.setField(existing, "updated", original);
         existing.skipSettingAuditableFields();
@@ -115,6 +115,7 @@ public class BaseEntityIntegrationTest extends BaseIntegrationTest {
         save(existing);
         // Force in-memory instance to not be set to skip auditing (test framework stores same instance in memory)
         ReflectionTestUtils.setField(existing, "skipSettingAuditableFields", false);
+        Thread.sleep(100);
 
         int updates = testEntityRepository.reindexDataAndSearch();
         assertThat(updates, is(1));
