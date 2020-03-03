@@ -47,10 +47,10 @@ const error = (state = null, action) => {
   }
 };
 
-export const getUser = state =>
+export const getUser = (state) =>
   state.user;
 
-export const getIsAuthenticated = state =>
+export const getIsAuthenticated = (state) =>
   state.isAuthenticated;
 
 export default combineReducers({

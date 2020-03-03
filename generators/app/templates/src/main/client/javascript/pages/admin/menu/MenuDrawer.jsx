@@ -1,11 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import PeopleIcon from '@material-ui/icons/People';
@@ -84,14 +78,14 @@ MenuDrawer.defaultProps = {
   loggedInUser: {},
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   loggedInUser: getLoggedInUser(state),
   isOpen: getOpenDrawer(state) === 'admin',
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(authActions.logout()).then(() => dispatch(push('/'))),
-  navigateTo: path => dispatch(push(path)),
+  navigateTo: (path) => dispatch(push(path)),
   closeDrawer: () => dispatch(closeDrawerAction()),
 });
 

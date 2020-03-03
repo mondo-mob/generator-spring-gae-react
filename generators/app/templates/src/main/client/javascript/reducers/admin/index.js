@@ -21,7 +21,7 @@ const inviteUsers = (state = { dialogOpen: false }, action) => {
   }
 };
 
-export const isInviteUserDialogOpen = state => state.inviteUsers.dialogOpen;
+export const isInviteUserDialogOpen = (state) => state.inviteUsers.dialogOpen;
 
 export default combineReducers({
   inviteUsers,

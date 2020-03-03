@@ -1,95 +1,110 @@
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button, Dialog, DialogActions, DialogContent, makeStyles, Slide } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { submit } from 'redux-form';
+import cx from 'classnames';
+import DialogTitleWithClose from '../common/DialogTitleWithClose';
 
-class FormDialog extends Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    formComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
-    formName: PropTypes.string.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    onDelete: PropTypes.func,
-    open: PropTypes.bool,
-    cancelButtonText: PropTypes.string,
-    submitButtonText: PropTypes.string,
-    deleteButtonText: PropTypes.string,
-    initialValues: PropTypes.object,
-  };
+const Transition = React.forwardRef((props, ref) => <Slide ref={ref} direction="left" {...props} />);
 
-  static defaultProps = {
-    open: false,
-    cancelButtonText: 'Cancel',
-    submitButtonText: 'Submit',
-    deleteButtonText: 'Delete',
-    onDelete: null,
-    initialValues: null,
-  };
+const useStyles = makeStyles((theme) => ({
+  allowOverflow: {
+    overflowY: 'visible',
+  },
+  padded: {
+    paddingRight: theme.spacing(2),
+  },
+}));
 
-  handleSubmit = () => {
-    const { dispatch, formName } = this.props;
+const FormDialog = ({
+  title,
+  open,
+  cancelButtonText,
+  submitButtonText,
+  deleteButtonText,
+  onCancel,
+  onSubmit,
+  onDelete,
+  formName,
+  submitting,
+  maxWidth,
+  allowOverflow,
+  initialValues,
+  formComponent: FormComponent,
+  ...rest
+}) => {
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
+  const handleSubmit = () => {
     dispatch(submit(formName));
   };
 
-  handleDelete = () => {
-    const { onDelete, initialValues } = this.props;
+  const handleDelete = () => onDelete && onDelete(initialValues);
 
-    return onDelete && onDelete(initialValues);
-  };
-
-  render() {
-    const {
-      title,
-      open,
-      cancelButtonText,
-      submitButtonText,
-      deleteButtonText,
-      onCancel,
-      onSubmit,
-      onDelete,
-      formComponent: FormComponent,
-      ...rest
-    } = this.props;
-
-    const actions = (
-      <Fragment>
-        <Button variant="flat" onClick={onCancel}>
-          {cancelButtonText}
+  const actions = (
+    <>
+      <Button variant="text" onClick={onCancel}>
+        {cancelButtonText}
+      </Button>
+      {onDelete && (
+        <Button variant="text" secondary onClick={handleDelete}>
+          {deleteButtonText}
         </Button>
-        {onDelete && <Button variant="flat" secondary onClick={this.handleDelete}>{deleteButtonText}</Button>}
-        <Button
-          form="dialog-form" // Use this as the id of the form in the formComponent to enable submit on enter key
-          type="submit"
-          variant="flat"
-          color="primary"
-          onClick={this.handleSubmit}
-        >
-          {submitButtonText}
-        </Button>
-      </Fragment>);
+      )}
+      <Button variant="text" color="primary" disabled={submitting} onClick={handleSubmit}>
+        {submitButtonText}
+      </Button>
+    </>
+  );
 
-    return (
-      <Dialog title={title} open={open} onClose={onCancel} fullWidth maxWidth="sm">
-        <DialogTitle>
-          {title}
-        </DialogTitle>
-        <DialogContent>
-          <FormComponent onSubmit={onSubmit} {...rest} />
-        </DialogContent>
-        <DialogActions>
-          {actions}
-        </DialogActions>
-      </Dialog>
-    );
-  }
-}
+  return (
+    <Dialog
+      classes={{ paper: allowOverflow ? classes.allowOverflow : '' }}
+      title={title}
+      open={open}
+      onClose={onCancel}
+      fullWidth
+      maxWidth={maxWidth}
+      TransitionComponent={Transition}
+    >
+      <DialogTitleWithClose title={title} onClose={onCancel} />
+      <DialogContent className={cx({ [classes.allowOverflow]: allowOverflow })}>
+        <FormComponent onSubmit={onSubmit} {...rest} initialValues={initialValues} />
+      </DialogContent>
+      <DialogActions className={classes.padded}>{actions}</DialogActions>
+    </Dialog>
+  );
+};
 
-export default connect()(FormDialog);
+FormDialog.propTypes = {
+  title: PropTypes.string.isRequired,
+  formComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
+  formName: PropTypes.string.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
+  open: PropTypes.bool,
+  cancelButtonText: PropTypes.string,
+  submitButtonText: PropTypes.string,
+  deleteButtonText: PropTypes.string,
+  maxWidth: PropTypes.string,
+  submitting: PropTypes.bool,
+  initialValues: PropTypes.object,
+  allowOverflow: PropTypes.bool,
+};
+
+FormDialog.defaultProps = {
+  open: false,
+  cancelButtonText: 'Cancel',
+  submitButtonText: 'Submit',
+  deleteButtonText: 'Delete',
+  maxWidth: 'sm',
+  onDelete: null,
+  initialValues: null,
+  submitting: false,
+  allowOverflow: false,
+};
+
+export default FormDialog;

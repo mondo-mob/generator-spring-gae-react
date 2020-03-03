@@ -1,22 +1,24 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import React, { Fragment } from 'react';
+import React from 'react';
+import { CssBaseline } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import BaseRoutes from '../routes/BaseRoutes';
 import store from '../store';
 import theme from '../theme';
+import '../../less/styles/main.less';
 
 const App = () => (
-  <Fragment>
+  <ThemeProvider theme={theme}>
     <Provider store={store}>
       <IntlProvider locale="en-AU">
-        <MuiThemeProvider theme={theme}>
+        <>
           <CssBaseline />
           <BaseRoutes />
-        </MuiThemeProvider>
+        </>
       </IntlProvider>
     </Provider>
-  </Fragment>);
+  </ThemeProvider>
+);
 
 export default App;

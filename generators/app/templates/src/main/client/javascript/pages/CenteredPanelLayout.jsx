@@ -1,7 +1,5 @@
-import Paper from '@material-ui/core/Paper';
-import {
-  arrayOf, node, oneOfType, string,
-} from 'prop-types';
+import { Paper } from '@material-ui/core';
+import { arrayOf, node, oneOfType, string } from 'prop-types';
 import React from 'react';
 
 const CenteredPanelLayout = ({ children, title }) => (

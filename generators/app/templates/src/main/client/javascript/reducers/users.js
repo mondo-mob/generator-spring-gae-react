@@ -34,12 +34,12 @@ const listIds = (state = { users: [], loading: true }, action) => {
   }
 };
 
-export const getAllIsLoading = state => state.listIds.loading;
+export const getAllIsLoading = (state) => state.listIds.loading;
 
 export const getAll = createSelector(
-  state => state.listIds.users,
-  state => state.byId,
-  (users, usersById) => users.map(id => usersById[id]),
+  (state) => state.listIds.users,
+  (state) => state.byId,
+  (users, usersById) => users.map((id) => usersById[id]),
 );
 export const getById = (state, id) => state.byId[id];
 

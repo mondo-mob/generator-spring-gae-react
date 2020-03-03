@@ -1,17 +1,17 @@
 import { isFunction } from 'lodash';
 import { SubmissionError } from 'redux-form';
 
-export const toSubmissionError = error => (error.messages ? new SubmissionError({ _error: error }) : error);
+export const toSubmissionError = (error) => (error.messages ? new SubmissionError({ _error: error }) : error);
 
 export const asyncAction =
   (prefix, promiseOrPromiseCreator, options = {}) => (dispatch, getState) => {
     const {
-      responseTransformer = res => res,
-      onSuccess = res => res,
+      responseTransformer = (res) => res,
+      onSuccess = (res) => res,
       onFailure = (error) => {
         throw error;
       },
-      transformError = error => error,
+      transformError = (error) => error,
     } = options;
 
     console.log(`${prefix}_INPROGRESS`);

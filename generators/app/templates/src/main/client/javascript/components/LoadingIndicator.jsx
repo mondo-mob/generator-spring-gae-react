@@ -1,21 +1,31 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { string } from 'prop-types';
+import { CircularProgress, withStyles } from '@material-ui/core';
+import { string, object } from 'prop-types';
 import React from 'react';
+import cx from 'classnames';
 import './LoadingIndicator.less';
 
-const LoadingIndicator = ({ text, ...rest }) => (
-  <div className="loading-indicator">
+const LoadingIndicator = ({ text, classes, ...rest }) => (
+  <div className={cx(['loading-indicator', classes.loadingContainer])}>
     <CircularProgress className="spinner" {...rest} />
-    <p className="text">{text || 'Loading...'}</p>
+    {text && <p className="text">{text}</p>}
   </div>
 );
 
 LoadingIndicator.propTypes = {
   text: string,
+  classes: object.isRequired,
 };
 
 LoadingIndicator.defaultProps = {
   text: null,
 };
 
-export default LoadingIndicator;
+const styles = {
+  loadingContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+};
+
+export default withStyles(styles)(LoadingIndicator);

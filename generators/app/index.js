@@ -83,6 +83,7 @@ module.exports = class extends Generator {
     copy('babelrc', '.babelrc');
     copy('editorconfig', '.editorconfig');
     copy('eslintrc', '.eslintrc');
+    copy('prettierrc', '.prettierrc');
     copy('gitignore', '.gitignore');
     copy('npmrc', '.npmrc');
     copy('java-version', '.java-version');

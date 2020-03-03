@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { SubmissionError } from 'redux-form';
-import queryString from 'query-string';
+import { parse } from 'query-string';
 
 import * as authActions from '../actions/auth';
 import LoginForm from '../components/forms/LoginForm';
@@ -19,7 +19,7 @@ class LoginPage extends Component {
 
   handleSubmit = (values) => {
     const { location, login, navigateTo } = this.props;
-    const query = queryString.parse(location.search);
+    const query = parse(location.search);
     const next = query.next || '/admin';
 
     return login(values)

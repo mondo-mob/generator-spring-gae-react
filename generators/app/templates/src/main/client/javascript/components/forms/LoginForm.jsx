@@ -1,14 +1,14 @@
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
 import { email, required } from 'redux-form-validators';
+import { TextField } from '../wrappers/material';
 import FormError from './FormError';
 
 const LoginForm = ({ handleSubmit, submitting, error }) => (
   <form onSubmit={handleSubmit} noValidate>
-    <FormError value={error}/>
+    <FormError value={error} />
     <Field
       name="username"
       component={TextField}
@@ -32,13 +32,7 @@ const LoginForm = ({ handleSubmit, submitting, error }) => (
     />
 
     <div className="actions">
-      <Button
-        variant="raised"
-        color="primary"
-        type="submit"
-        disabled={submitting}
-        fullWidth
-      >
+      <Button variant="contained" color="primary" type="submit" disabled={submitting} fullWidth>
         {submitting ? 'Signing in...' : 'Sign in'}
       </Button>
     </div>

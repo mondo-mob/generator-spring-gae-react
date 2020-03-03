@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
+import { TextField } from '../wrappers/material';
 import { required } from 'redux-form-validators';
 
 // eslint-disable-next-line react/prop-types

@@ -13,26 +13,56 @@
     },
     "globals": {
         "DEVELOPMENT": false,
-        "PRODUCTION": false,
+        "PRODUCTION": false
     },
     "rules": {
-        "implicit-arrow-linebreak": 0,
         "jsx-a11y/anchor-is-valid": 0,
         "no-case-declarations": 0,
         "no-console": 0,
+        "implicit-arrow-linebreak": 0,
+        "object-curly-newline": 0,
         "operator-linebreak": 0,
         "react/forbid-prop-types": 0,
         "react/jsx-space-before-closing": 0,
         "react/jsx-tag-spacing": 0,
         "react/no-typos": 0,
-        "max-len": ["error", 150, 2, {
-            "ignoreUrls": true,
-            "ignoreComments": false,
-            "ignoreRegExpLiterals": true,
-            "ignoreStrings": true,
-            "ignoreTemplateLiterals": true,
-        }],
-        "import/prefer-default-export": ["off"],
-        "react/jsx-one-expression-per-line": ["off"]
+        "react/no-access-state-in-setstate": 0,
+        "react/jsx-one-expression-per-line": 0,
+        "react/destructuring-assignment": 0,
+        "react/jsx-wrap-multilines": 0,
+        "react/no-unescaped-entities": 0,
+        "react/static-property-placement": 0,
+        "react/jsx-props-no-spreading": 0,
+        "react/sort-comp": 0,
+        "no-confusing-arrow": "off",
+        "function-paren-newline": "off",
+        "max-len": [
+            "error",
+            150,
+            2,
+            {
+                "ignoreUrls": true,
+                "ignoreComments": false,
+                "ignoreRegExpLiterals": true,
+                "ignoreStrings": true,
+                "ignoreTemplateLiterals": true
+            }
+        ],
+        "import/prefer-default-export": [
+            "off"
+        ],
+        "import/order": [
+            "off"
+        ],
+        "camelcase": [
+            "error",
+            {
+                "allow": [
+                    "UNSAFE_componentWillMount",
+                    "UNSAFE_componentWillReceiveProps"
+                ]
+            }
+        ],
+        "react/state-in-constructor": 0
     }
 }

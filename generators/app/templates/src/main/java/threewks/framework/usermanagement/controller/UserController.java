@@ -4,7 +4,10 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,9 +28,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import static threewks.util.RestUtils.response;
 
 @RestController
@@ -46,7 +46,7 @@ public class UserController {
         this.userInviteService = userInviteService;
     }
 
-    @RequestMapping(method = GET, path = "/me")
+    @GetMapping("/me")
     public UserDto user(HttpServletResponse response) {
         Optional<User> currentUser = userAdapter.getCurrentUser();
 
@@ -60,36 +60,36 @@ public class UserController {
         return null;
     }
 
-    @RequestMapping(method = GET, path = "/{userId}")
+    @GetMapping("/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public UserDto user(@PathVariable("userId") String userId) {
         return response(ToUserDto.INSTANCE.transform(userService.findById(userId)));
     }
 
-    @RequestMapping(method = POST, path = "/invite")
+    @PostMapping("/invite")
     @PreAuthorize("hasRole('ADMIN')")
     public UserDto inviteUser(@RequestBody @Valid InviteUserRequest inviteUserRequest) {
         return transform(userInviteService.invite(inviteUserRequest.getEmail(), new HashSet<>(inviteUserRequest.getRoles())));
     }
 
-    @RequestMapping(method = POST, path = "/invite/{inviteCode}")
+    @PostMapping("/invite/{inviteCode}")
     public UserDto redeemInvitation(@PathVariable("inviteCode") String inviteCode, @RequestBody RedeemInvitationRequest request) {
         return transform(userInviteService.redeem(inviteCode, request.getFirstName(), request.getLastName(), request.getPassword()));
     }
 
-    @RequestMapping(method = PUT, path = "/{userId}")
+    @PutMapping("/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public UserDto saveUser(@PathVariable("userId") String userId, @RequestBody @Valid UpdateUserRequest request) {
         return transform(userService.update(userId, request));
     }
 
-    @RequestMapping(method = GET, path = "")
+    @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> list() {
         return transform(userService.list());
     }
 
-    @RequestMapping(method = POST, path = "/{userId}/change-password")
+    @PostMapping("/{userId}/change-password")
     @PreAuthorize("hasRole('ADMIN')")
     public UserDto changePassword(@PathVariable("userId") String userId, @RequestBody SimpleRequest<String> request) {
         return transform(userService.changePassword(userId, request.getValue()));

@@ -1,4 +1,5 @@
-import { withStyles } from '@material-ui/core/styles';
+/* eslint-disable react/no-array-index-key */
+import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import * as model from '../../model';
@@ -13,9 +14,7 @@ const styles = ({ palette: { error } }) => ({
 
 const FormError = ({ value, classes }) => {
   const errors = (value && value.messages) || (value && [value]);
-  console.log('errors array: ', errors);
   return (
-    // eslint-disable-next-line react/no-array-index-key
     <div>{errors && errors.map((err, index) => <p key={index} className={classes.formError}>{err}</p>)}</div>
   );
 };

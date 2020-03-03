@@ -1,6 +1,6 @@
 import { formEncode, request, requestJSON } from './http';
 
-const invite = userDetails =>
+const invite = (userDetails) =>
   requestJSON('/users/invite', 'POST', userDetails);
 
 const redeemInvite = (inviteCode, userDetails) =>
@@ -9,7 +9,7 @@ const redeemInvite = (inviteCode, userDetails) =>
 const list = () =>
   requestJSON('/users');
 
-const login = credentials =>
+const login = (credentials) =>
   request('/login', 'POST', formEncode({ ...credentials, 'remember-me': true }), { 'Content-Type': 'application/x-www-form-urlencoded' });
 
 const logout = () =>
@@ -18,10 +18,10 @@ const logout = () =>
 const me = () =>
   requestJSON('/users/me', 'GET');
 
-const get = userId =>
+const get = (userId) =>
   requestJSON(`/users/${userId}`);
 
-const save = user =>
+const save = (user) =>
   requestJSON(`/users/${user.id}`, 'PUT', user);
 
 const changePassword = (userId, password) =>

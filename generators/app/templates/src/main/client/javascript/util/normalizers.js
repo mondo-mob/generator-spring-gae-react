@@ -1,2 +1,2 @@
 
-export const defaultNull = val => (val === '' ? null : val);
+export const defaultNull = (val) => (val === '' ? null : val);

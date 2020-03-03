@@ -13,7 +13,7 @@ import java.util.UUID;
 public class TestData {
 
     public static User user(Role...roles) {
-        return user("admin@3wks.com.au", roles);
+        return user("test@email.org", roles);
     }
 
     public static User user(String email) {

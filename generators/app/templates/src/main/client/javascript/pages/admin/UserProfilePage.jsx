@@ -28,7 +28,7 @@ class UserProfilePage extends Component {
     this.fetchUser(params.userId);
   }
 
-  handleSubmit = values =>
+  handleSubmit = (values) =>
     api.users
       .save(values)
       .then(() => Alert.success('User updated'))
@@ -44,7 +44,7 @@ class UserProfilePage extends Component {
 
     api.users
       .get(userId)
-      .then(user => this.setState({ isFetching: false, user }))
+      .then((user) => this.setState({ isFetching: false, user }))
       .catch((error) => {
         this.setState({ isFetching: false });
 
@@ -76,8 +76,8 @@ class UserProfilePage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  roles: getReferenceDataRoles(state).map(input => ({
+const mapStateToProps = (state) => ({
+  roles: getReferenceDataRoles(state).map((input) => ({
     value: input.id,
     label: input.description,
   })),

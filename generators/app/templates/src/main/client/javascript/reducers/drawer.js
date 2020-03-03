@@ -13,4 +13,4 @@ export default (state = initialState, action) => {
   }
 };
 
-export const getOpenDrawer = state => state.name;
+export const getOpenDrawer = (state) => state.name;

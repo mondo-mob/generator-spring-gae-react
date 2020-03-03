@@ -1,25 +1,28 @@
 import { intersection } from 'lodash';
 import { fetchUser } from '../actions/auth';
-import { getLoggedInUser, getIsAuthenticated } from '../reducers';
+import { getIsAuthenticated, getLoggedInUser } from '../reducers';
 import store from '../store';
 import { fetchReferenceData } from '../actions/referenceData';
 
 const { dispatch, getState } = store;
 
-const withLogin = nextPage => ({ pathname: '/login', search: nextPage === '/' ? null : `?next=${nextPage}` });
+const withLogin = (nextPage) => ({ pathname: '/login', search: nextPage === '/' ? null : `?next=${nextPage}` });
 
 export const loginRequired = (push, location, callback) => {
-  dispatch(fetchUser()).then(() => {
-    if (getIsAuthenticated(getState())) {
-      callback();
-    } else {
+  dispatch(fetchUser()).then(
+    () => {
+      if (getIsAuthenticated(getState())) {
+        callback();
+      } else {
+        dispatch(push(withLogin(location.pathname)));
+        callback(new Error('Login required'));
+      }
+    },
+    (error) => {
       dispatch(push(withLogin(location.pathname)));
-      callback(new Error('Login required'));
-    }
-  }, (error) => {
-    dispatch(push(withLogin(location.pathname)));
-    callback(error);
-  });
+      callback(error);
+    },
+  );
 };
 
 export const loadRefData = (push, location, callback) => {

@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import Color from 'color';
-import grey from '@material-ui/core/colors/grey';
+import { grey } from '@material-ui/core/colors';
 
 const defaultGrey = grey[200];
 
@@ -16,9 +16,7 @@ export default createMuiTheme({
       default: defaultGrey,
     },
   },
-  spacing: {
-    unit: spacing,
-  },
+  spacing,
   overrides: {
     MuiButton: {
       root: {

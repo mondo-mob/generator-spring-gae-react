@@ -1,10 +1,4 @@
-import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { Button, Chip, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { func, array, arrayOf } from 'prop-types';
 import React, { Component } from 'react';
@@ -34,7 +28,7 @@ const UserTable = ({ users, onChangePassword }) => (
       </TableRow>
     </TableHead>
     <TableBody>
-      {users.map(user => (
+      {users.map((user) => (
         <TableRow key={user.id}>
           <TableCell>
             <Link to={`/admin/users/${user.id}`}>{user.email}</Link>
@@ -43,7 +37,7 @@ const UserTable = ({ users, onChangePassword }) => (
           <TableCell>{user.lastName}</TableCell>
           <TableCell>
             <div className="roles">
-              {user.roles.map(role => <Chip key={role} className="role" label={role}/>)}
+              {user.roles.map((role) => <Chip key={role} className="role" label={role}/>)}
             </div>
           </TableCell>
           <TableCell>{user.status}</TableCell>
@@ -76,7 +70,7 @@ class ManageUsersPage extends Component {
     this.fetchUsers();
   }
 
-  handleInviteUser = values => api.users.invite(values)
+  handleInviteUser = (values) => api.users.invite(values)
     .then(() => {
       Alert.success('User invite sent!');
       this.closeInviteUserDialog();
@@ -115,8 +109,8 @@ class ManageUsersPage extends Component {
 
   fetchUsers() {
     api.users.list()
-      .then(users => this.setState({ users }))
-      .catch(error => Alert.error(`Error fetching users: ${error.message}`));
+      .then((users) => this.setState({ users }))
+      .catch((error) => Alert.error(`Error fetching users: ${error.message}`));
   }
 
   render() {
@@ -128,7 +122,7 @@ class ManageUsersPage extends Component {
         <h1 className="display-1">Manage users</h1>
 
         <Button
-          variant="raised"
+          variant="outlined"
           className="invite-user-btn"
           onClick={this.openInviteUserDialog}
         >
@@ -163,8 +157,8 @@ class ManageUsersPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  roles: getReferenceDataRoles(state).map(input => ({
+const mapStateToProps = (state) => ({
+  roles: getReferenceDataRoles(state).map((input) => ({
     value: input.id,
     label: input.description,
   })),

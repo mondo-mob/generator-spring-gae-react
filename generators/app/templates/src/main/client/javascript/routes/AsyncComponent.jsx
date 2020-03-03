@@ -4,7 +4,7 @@ import applyEachSeries from 'async/applyEachSeries';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { push } from 'connected-react-router';
-import LoadingIndicator from '../components/LoadingIndicator';
+import PageLoading from '../components/PageLoading';
 
 class AsyncComponent extends React.Component {
   state = {
@@ -12,15 +12,13 @@ class AsyncComponent extends React.Component {
     asyncCompleted: false,
   };
 
-  componentWillMount() {
-    const {
-      asyncActions,
-      location,
-    } = this.props;
+  componentDidMount() {
+    const { asyncActions, location } = this.props;
 
     this.mounted = true;
     this.setState({ loading: true });
-    applyEachSeries(asyncActions, push, location, (error) => {
+    const appliedFunction = applyEachSeries(asyncActions, push, location);
+    appliedFunction((error) => {
       if (error) {
         console.error('hook error:', error);
       } // eslint-disable-line no-console
@@ -43,7 +41,7 @@ class AsyncComponent extends React.Component {
     const { loading, asyncCompleted } = this.state;
 
     if (loading) {
-      return <LoadingIndicator />;
+      return <PageLoading />;
     }
 
     if (asyncCompleted) {
@@ -56,10 +54,7 @@ class AsyncComponent extends React.Component {
 AsyncComponent.propTypes = {
   location: PropTypes.object.isRequired,
   asyncActions: PropTypes.array,
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.arrayOf(PropTypes.node),
-  ]).isRequired,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]).isRequired,
 };
 
 AsyncComponent.defaultProps = {

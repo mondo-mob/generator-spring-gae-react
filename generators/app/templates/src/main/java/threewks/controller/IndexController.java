@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import threewks.controller.dto.IndexMeta;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,7 @@ public class IndexController {
 
 
     // The RequestMapping for the indexPage() method will not match "/" so easiest fix was to create another method with this mapping.
-    @RequestMapping("/")
+    @GetMapping("/")
     public String rootIndexPage(HttpServletRequest request, Model model) {
         return indexPage(request, model);
     }
@@ -37,7 +36,7 @@ public class IndexController {
         return getIndex(request, model);
     }
 
-    @RequestMapping("/register/{code}")
+    @GetMapping("/register/{code}")
     public String indexPageFromRegister(HttpServletRequest request, Model model) {
         return getIndex(request, model);
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
+import { withRouter } from 'react-router-dom';
 import { SubmissionError } from 'redux-form';
 import { func, object } from 'prop-types';
 import { intersection } from 'lodash';
@@ -8,7 +9,7 @@ import CenteredPanelLayout from './CenteredPanelLayout';
 import RegisterForm from '../components/forms/RegisterForm';
 import * as authActions from '../actions/auth';
 
-const isAdmin = user =>
+const isAdmin = (user) =>
   user && intersection(['super', 'admin'], user.roles).length > 0;
 
 const navigate = (navigateTo, user) => navigateTo(isAdmin(user) ? '/admin' : '/');
@@ -56,4 +57,4 @@ class RegisterPage extends Component {
 
 const actions = { ...authActions, navigateTo: push };
 
-export default connect(null, actions)(RegisterPage);
+export default connect(null, actions)(withRouter(RegisterPage));

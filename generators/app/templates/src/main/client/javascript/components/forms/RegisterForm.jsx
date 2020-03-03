@@ -1,9 +1,9 @@
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
 import { required } from 'redux-form-validators';
+import { TextField } from '../wrappers/material';
 
 const RegisterForm = ({ handleSubmit, submitting }) => (
   <form onSubmit={handleSubmit} noValidate>
@@ -38,7 +38,7 @@ const RegisterForm = ({ handleSubmit, submitting }) => (
 
     <div className="actions">
       <Button
-        variant="raised"
+        variant="contained"
         type="submit"
         disabled={submitting}
         color="primary"

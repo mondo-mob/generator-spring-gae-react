@@ -1,10 +1,10 @@
-import Button from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 import { array, bool, func } from 'prop-types';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { TextField } from 'redux-form-material-ui';
-import { email, length, required } from 'redux-form-validators';
-import MenuItem from '@material-ui/core/MenuItem';
+import { email, required } from 'redux-form-validators';
+import { TextField } from '../wrappers/material';
+import MultiSelect from './MultiSelect';
 
 const UserProfileForm = ({ handleSubmit, submitting, roles }) => (
   <form onSubmit={handleSubmit} noValidate>
@@ -39,25 +39,11 @@ const UserProfileForm = ({ handleSubmit, submitting, roles }) => (
       ]}
       fullWidth
     />
-    <Field
-      name="roles"
-      component={TextField}
-      label="Roles"
-      select
-      SelectProps={{ multiple: true }}
-      fullWidth
-      validate={[
-        length({ min: 1, message: 'At least one role must be selected' }),
-      ]}
-    >
-      {roles.map(role => (
-        <MenuItem key={role.value} value={role.value}>{role.label}</MenuItem>
-      ))}
-    </Field>
+    <Field name="roles" component={MultiSelect} options={roles} label="Roles" margin="normal" />
 
     <div className="actions">
       <Button
-        variant="raised"
+        variant="outlined"
         type="submit"
         disabled={submitting}
         color="primary"

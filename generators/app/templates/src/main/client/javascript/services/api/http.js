@@ -12,7 +12,7 @@ const commonHeaders = () => ({
   'X-XSRF-TOKEN': cookies.get('XSRF-TOKEN'), // Ensure CSRF token is sent with every request
 });
 
-export const formEncode = obj => Object.keys(obj).map(k => `${k}=${encodeURIComponent(obj[k])}`).join('&');
+export const formEncode = (obj) => Object.keys(obj).map((k) => `${k}=${encodeURIComponent(obj[k])}`).join('&');
 
 export const request = (path, method = 'GET', body = null, headers = {}) => {
   const url = `${baseUrl}${path}`;
@@ -58,7 +58,7 @@ export const request = (path, method = 'GET', body = null, headers = {}) => {
 };
 
 const hasHeader = (headers = {}, headerName) =>
-  Object.keys(headers).some(key => key.toLowerCase() === headerName.toLowerCase());
+  Object.keys(headers).some((key) => key.toLowerCase() === headerName.toLowerCase());
 
 const requestWithData = (path, method, data, headers = {}) => {
   const headerContentType = 'Content-Type';
@@ -75,5 +75,5 @@ const requestWithData = (path, method, data, headers = {}) => {
 
 export const requestJSON = (path, method, data, headers = {}) =>
   (data ? requestWithData(path, method, data, headers) : request(path, method, null, headers))
-    .then(response => response.text())
-    .then(responseText => responseText && JSON.parse(responseText));
+    .then((response) => response.text())
+    .then((responseText) => responseText && JSON.parse(responseText));

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router';
 import { reducer as form } from 'redux-form';
 import admin, * as fromAdmin from './admin';
 import auth, * as fromAuth from './auth';
@@ -9,27 +10,29 @@ import referenceData, * as fromReferenceData from './referenceData';
 /**
  * Root reducer for the app.
  */
-const rootReducer = combineReducers({
-  form,
-  auth,
-  admin,
-  users,
-  drawer,
-  referenceData,
-});
+const rootReducer = (history) =>
+  combineReducers({
+    router: connectRouter(history),
+    form,
+    auth,
+    admin,
+    users,
+    drawer,
+    referenceData,
+  });
 
-export const getLoggedInUser = state =>
+export const getLoggedInUser = (state) =>
   fromAuth.getUser(state.auth);
 
-export const getIsAuthenticated = state =>
+export const getIsAuthenticated = (state) =>
   fromAuth.getIsAuthenticated(state.auth);
 
-export const isInviteUserDialogOpen = state => fromAdmin.isInviteUserDialogOpen(state.admin);
-export const getUsers = state => fromUsers.getAll(state.users);
+export const isInviteUserDialogOpen = (state) => fromAdmin.isInviteUserDialogOpen(state.admin);
+export const getUsers = (state) => fromUsers.getAll(state.users);
 
-export const getOpenDrawer = state =>
+export const getOpenDrawer = (state) =>
   fromDrawer.getOpenDrawer(state.drawer);
 
-export const getReferenceDataRoles = state => fromReferenceData.getAll(state.referenceData, 'Role');
+export const getReferenceDataRoles = (state) => fromReferenceData.getAll(state.referenceData, 'Role');
 
 export default rootReducer;

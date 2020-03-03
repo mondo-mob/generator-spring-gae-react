@@ -1,6 +1,6 @@
 import users from '../services/api/users';
 
-export const setUser = user => ({
+export const setUser = (user) => ({
   type: 'SET_USER',
   user,
 });
@@ -8,7 +8,8 @@ export const setUser = user => ({
 export const fetchUser = () => (dispatch) => {
   dispatch({ type: 'REQUEST_LOGGED_IN_USER' });
 
-  return users.me()
+  return users
+    .me()
     .then((user) => {
       dispatch({ type: 'REQUEST_LOGGED_IN_USER_SUCCESS', loggedIn: !!user });
       dispatch(setUser(user));
@@ -20,10 +21,11 @@ export const fetchUser = () => (dispatch) => {
     });
 };
 
-export const login = credentials => (dispatch) => {
+export const login = (credentials) => (dispatch) => {
   dispatch({ type: 'REQUEST_LOGIN' });
 
-  return users.login(credentials)
+  return users
+    .login(credentials)
     .then(users.me)
     .then((user) => {
       dispatch({ type: 'REQUEST_LOGIN_SUCCESS', user });
@@ -38,7 +40,8 @@ export const login = credentials => (dispatch) => {
 export const register = (inviteCode, userDetails) => (dispatch) => {
   dispatch({ type: 'REQUEST_REGISTER' });
 
-  return users.redeemInvite(inviteCode, userDetails)
+  return users
+    .redeemInvite(inviteCode, userDetails)
     .then((user) => {
       dispatch({ type: 'REQUEST_REGISTER_SUCCESS', user });
       return user;
@@ -52,7 +55,8 @@ export const register = (inviteCode, userDetails) => (dispatch) => {
 export const logout = () => (dispatch) => {
   dispatch({ type: 'REQUEST_LOGOUT' });
 
-  return users.logout()
+  return users
+    .logout()
     .then(() => {
       dispatch({ type: 'REQUEST_LOGOUT_SUCCESS' });
       return null;

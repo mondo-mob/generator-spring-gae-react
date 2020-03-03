@@ -2,14 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
-const parseString = require('xml2js').parseString;
 const convert = require('koa-connect');
 const history = require('connect-history-api-fallback');
 const proxy = require('http-proxy-middleware');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { parseString } = require('xml2js');
 
 const sourceDir = path.resolve(__dirname, 'src/main/client');
 
@@ -24,7 +25,7 @@ const targetDir = (function getTargetDir() {
   });
 
   return path.resolve(__dirname, `target/${artifactId}-${version}`);
-}());
+})();
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const isProduction = NODE_ENV === 'production';
@@ -98,44 +99,24 @@ const commonConfig = {
       {
         enforce: 'pre',
         test: /\.jsx?$/,
-        use: [
-          { loader: 'eslint-loader', options: { emitWarning: true } },
-          'source-map-loader',
-        ],
+        use: [{ loader: 'eslint-loader', options: { emitWarning: true } }, 'source-map-loader'],
         exclude: /node_modules/,
       },
 
       // Load library CSS styles
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          { loader: 'css-loader', options: { sourceMap: true } },
-        ],
+        use: isProduction ? [MiniCssExtractPlugin.loader, { loader: 'css-loader', options: { sourceMap: true } }] : ['style-loader', 'css-loader'],
         include: /node_modules/,
       },
 
       // Load Less files
       {
         test: /\.less$/,
-        include: [
-          path.resolve(sourceDir, 'less'),
-          path.resolve(sourceDir, 'javascript'),
-        ],
-        use: [
-          'style-loader',
-          { loader: 'css-loader', options: { sourceMap: true, importLoaders: 1 } },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true,
-              plugins() {
-                return [require('autoprefixer')];  // eslint-disable-line global-require
-              },
-            },
-          },
-          { loader: 'less-loader', options: { sourceMap: true } },
-        ],
+        include: [path.resolve(sourceDir, 'less'), path.resolve(sourceDir, 'javascript')],
+        use: isProduction
+          ? [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader']
+          : ['style-loader', 'css-loader', 'postcss-loader', 'less-loader?source-map'],
       },
 
       // Image loading. Inlines small images as data URIs (i.e. < 10k).
@@ -192,9 +173,7 @@ const developmentConfig = {
       {
         test: /\.jsx?$/,
         include: path.resolve(sourceDir, 'javascript'),
-        use: [
-          'babel-loader',
-        ],
+        use: ['babel-loader'],
       },
     ],
   },
@@ -202,10 +181,20 @@ const developmentConfig = {
     port: 3000,
     content: [targetDir],
     add: (app) => {
-      app.use(convert(proxy(['/_ah', '/api', '/login/', '/system'], { target: 'http://localhost:8080' })));
-      app.use(convert(history({
-        index: 'WEB-INF/ftl/index.html',
-      })));
+      app.use(convert(proxy('/_ah', { target: 'http://localhost:8080' })));
+      app.use(convert(proxy('/api', { target: 'http://localhost:8080' })));
+      app.use(convert(proxy('/login/', { target: 'http://localhost:8080' })));
+      app.use(convert(proxy('/system', { target: 'http://localhost:8080' })));
+      app.use(convert(proxy('/cron', { target: 'http://localhost:8080' })));
+      app.use(convert(proxy('/task', { target: 'http://localhost:8080' })));
+      app.use(convert(proxy('/error', { target: 'http://localhost:8080' })));
+      app.use(
+        convert(
+          history({
+             index: 'WEB-INF/ftl/index.html',
+          }),
+        ),
+      );
     },
   },
 };
@@ -217,9 +206,7 @@ const developmentConfig = {
 const productionConfig = {
   devtool: 'source-map',
 
-  entry: [
-    './src/main/client/javascript/index.jsx',
-  ],
+  entry: ['./src/main/client/javascript/index.jsx'],
 
   output: {
     // Hash bundles for easy and agressive caching
@@ -228,9 +215,10 @@ const productionConfig = {
 
   plugins: [
     // Ensure old builds are cleaned out
-    new CleanWebpackPlugin([
-      path.join(targetDir, 'client'),
-    ]),
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: '[contenthash].css',
+    }),
   ],
 
   module: {
@@ -238,9 +226,7 @@ const productionConfig = {
       {
         test: /\.jsx?$/,
         include: path.resolve(sourceDir, 'javascript'),
-        use: [
-          'babel-loader',
-        ],
+        use: ['babel-loader'],
       },
     ],
   },

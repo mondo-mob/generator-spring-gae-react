@@ -1,11 +1,6 @@
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { AppBar, IconButton, Toolbar, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import {
-  arrayOf, func, node, oneOfType,
-} from 'prop-types';
+import { arrayOf, func, node, oneOfType } from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Alert from 'react-s-alert';
@@ -16,30 +11,31 @@ import MenuDrawer from './menu/MenuDrawer';
 
 const AdminLayout = ({ children, openDrawer }) => (
   <div className="admin-layout">
-    <Alert effect="slide" position="bottom-right" stack />
+    <Alert effect="slide" position="bottom-right" stack/>
 
     <AppBar position="static">
       <Toolbar>
         <IconButton aria-label="Menu" color="inherit" onClick={openDrawer}>
-          <MenuIcon />
+          <MenuIcon/>
         </IconButton>
-        <Typography variant="title" color="inherit">
+        <Typography variant="subtitle1" color="inherit">
           Administration
         </Typography>
       </Toolbar>
     </AppBar>
 
-    <MenuDrawer />
+    <MenuDrawer/>
 
     <div className="main">{children}</div>
-  </div>);
+  </div>
+);
 
 AdminLayout.propTypes = {
   children: oneOfType([node, arrayOf(node)]).isRequired,
   openDrawer: func.isRequired,
 };
 
-export const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = (dispatch) => ({
   openDrawer: () => dispatch(openDrawerAction('admin')),
 });
 

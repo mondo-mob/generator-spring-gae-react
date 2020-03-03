@@ -1,15 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import 'normalize.css';
-
 import App from './components/App';
-import '../less/styles/main.less';
 import { attachErrorLogger } from './util/errors';
 
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
 attachErrorLogger();
 
 // Define render as a function so we can re-render when using Hot Module Replacement
