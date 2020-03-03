@@ -87,6 +87,7 @@ module.exports = class extends Generator {
     copy('gitignore', '.gitignore');
     copy('npmrc', '.npmrc');
     copy('java-version', '.java-version');
+    copy('postcss.config.js');
     copy('etc');
     copy('src');
 
