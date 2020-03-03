@@ -8,7 +8,7 @@ Before you can run this app up you'll need to check you have the following tools
 
 * Java 8
 * Maven 3
-* Node >= 6.9.1
+* Node latest LTS version
 
 ## Getting Started
 
