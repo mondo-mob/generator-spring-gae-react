@@ -1,7 +1,8 @@
 # generator-spring-gae-react [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Yeoman generator for a React app that runs atop Spring on Google App Engine
 
-Version 2.x of this generator uses Spring Boot 2.x.
+## Release history
+See the [Change Log](./CHANGELOG.md).
 
 ## Installation
 
