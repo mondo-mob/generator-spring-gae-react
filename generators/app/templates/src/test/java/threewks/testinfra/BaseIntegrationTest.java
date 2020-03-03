@@ -12,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
-import threewks.framework.usermanagement.repository.UserRepository;
 import threewks.testinfra.rules.LocalServicesRule;
 import threewks.util.TestDateTimeUtils;
 
@@ -30,11 +29,11 @@ public abstract class BaseIntegrationTest {
     public LocalServicesRule localServicesRule = new LocalServicesRule();
 
     @Autowired
-    protected UserRepository userRepository;
-    @Autowired
     protected ObjectifyProxy objectifyProxy;
     @Autowired
     protected SearchService searchService;
+    @Autowired
+    protected TestHelper testHelper;
 
     @Rule
     public final ExpectedException thrown = ExpectedException.none();

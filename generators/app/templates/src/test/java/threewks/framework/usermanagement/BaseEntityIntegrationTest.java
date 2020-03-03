@@ -37,7 +37,7 @@ public class BaseEntityIntegrationTest extends BaseIntegrationTest {
         localServicesRule.registerAdditionalEntities(TestEntity.class);
         testEntityRepository = new BaseObjectifyStringRepository<TestEntity>(objectifyProxy, searchService, TestEntity.class) {
         };
-        user = userRepository.save(securityContextReset.getUser());
+        user = testHelper.saveUser(securityContextReset.getUser());
     }
 
 
@@ -64,7 +64,7 @@ public class BaseEntityIntegrationTest extends BaseIntegrationTest {
     public void save_willSetUpdatedByButNotOverrideCreatedBy_whenAlreadyCreated() {
         TestEntity existing = new TestEntity();
         OffsetDateTime original = DateTimeUtils.now();
-        User originalUser = userRepository.save(TestData.user("some-other@email.org"));
+        User originalUser = testHelper.saveUser(TestData.user("some-other@email.org"));
 
         ReflectionTestUtils.setField(existing, "created", original);
         ReflectionTestUtils.setField(existing, "createdBy", Refs.ref(originalUser));

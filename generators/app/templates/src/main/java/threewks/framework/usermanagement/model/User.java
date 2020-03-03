@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import org.springframework.contrib.gae.security.GaeUser;
 import threewks.framework.BaseEntityCore;
 import threewks.framework.usermanagement.Role;
@@ -25,7 +26,9 @@ public class User extends BaseEntityCore implements GaeUser, Serializable {
     private String password;
     private String firstName;
     private String lastName;
+    @Index
     private Set<Role> roles = new LinkedHashSet<>();
+    @Index
     private boolean enabled = true;
 
     private User() {

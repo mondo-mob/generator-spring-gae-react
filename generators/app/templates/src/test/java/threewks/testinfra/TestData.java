@@ -20,6 +20,11 @@ public class TestData {
         return user(email, Role.ADMIN, Role.SUPER);
     }
 
+    public static User user(int seed, Role...roles) {
+        return user(String.format("user-%s@email.org", seed), roles)
+            .setFirstName("User " + seed);
+    }
+
     public static User user(String email, Role...roles) {
         return User.byEmail(email, "myPass")
             .setFirstName("aFirstName")
