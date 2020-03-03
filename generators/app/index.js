@@ -88,6 +88,7 @@ module.exports = class extends Generator {
     copy('npmrc', '.npmrc');
     copy('java-version', '.java-version');
     copy('postcss.config.js');
+    copy('jestsetup.jsx');
     copy('etc');
     copy('src');
 
