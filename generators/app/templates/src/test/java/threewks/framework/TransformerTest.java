@@ -13,7 +13,9 @@ import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 @SuppressWarnings("ConstantConditions")
@@ -25,6 +27,11 @@ public class TransformerTest {
     @Test
     public void transform() {
         assertThat(transformer.transform("abc"), is(3));
+    }
+
+    @Test
+    public void transform_willHandleNull() {
+        assertThat(transformer.transform((String) null), nullValue());
     }
 
     @Test
@@ -47,6 +54,19 @@ public class TransformerTest {
         Set<Integer> result = transformer.transform(Sets.newHashSet("a", "ab", "abc"));
 
         assertThat(result, containsInAnyOrder(1, 2, 3));
+    }
+
+    @Test
+    public void transformSet_willUseLinkedHashSet_whenSourceIsLinkedHashSet() {
+        Set<String> linked = new LinkedHashSet<>();
+        linked.add("a");
+        linked.add("ab");
+        linked.add("abc");
+
+        Set<Integer> result = transformer.transform(linked);
+
+        assertThat(result, instanceOf(LinkedHashSet.class));
+        assertThat(result, contains(1, 2, 3));
     }
 
     @Test
