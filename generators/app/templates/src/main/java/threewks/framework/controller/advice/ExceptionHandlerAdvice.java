@@ -9,10 +9,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import threewks.framework.AuthenticationException;
@@ -24,12 +27,12 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@ControllerAdvice
+@ControllerAdvice(annotations = {RestController.class, Controller.class})
 public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionHandlerAdvice.class);
 
     @Order(100)
-    @ExceptionHandler({IllegalArgumentException.class, HttpMessageConversionException.class})
+    @ExceptionHandler({IllegalArgumentException.class, HttpMessageConversionException.class, IllegalStateException.class})
     public ResponseEntity<ResponseError> handleBadRequestExceptions(Exception e) {
         LOG.info("Bad request", e);
         return buildResponseError(e, HttpStatus.BAD_REQUEST);
@@ -47,6 +50,13 @@ public class ExceptionHandlerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ResponseError> handleUnauthorised(Exception e) {
         LOG.debug("Unauthorised. {}: {}", e.getClass(), e.getMessage());
         return buildResponseError(e, HttpStatus.UNAUTHORIZED);
+    }
+
+    @Order
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<ResponseError> handleAuthorizationFailure(Exception e) {
+        LOG.debug("Unauthorised. {}: {}", e.getClass(), e.getMessage());
+        return buildResponseError(e, HttpStatus.FORBIDDEN);
     }
 
     @Order
