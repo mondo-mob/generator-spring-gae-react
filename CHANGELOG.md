@@ -1,3 +1,6 @@
+## 3.1.1 (2020-03-10)
+Add additional exception handling to endpoints
+
 ## 3.1.0 (2020-03-06)
 `Transformer` utility class as some additional functions for functional chaining and support for `Set`.
 
